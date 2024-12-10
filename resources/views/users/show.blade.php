@@ -33,11 +33,13 @@
                     @endif
                 </div>
                 <div class="col-sm-3 col-lg-2">
-                    @if(auth()->user()->hasRoles('users.destroy'))
-                    <form action="{{route('users.reactive',$user->id)}}" method="POST" >
-                        @csrf
-                        <button type="submit" class="btn btn-app bg-gradient-info btn-xs" ><i class="fas fa-check"></i></button>
-                    </form>
+                    @if($user->deleted_at)
+                        @if(auth()->user()->hasRoles('users.destroy'))
+                        <form action="{{route('users.reactive',$user->id)}}" method="POST" >
+                            @csrf
+                            <button type="submit" class="btn btn-app bg-gradient-info btn-xs" ><i class="fas fa-check"></i></button>
+                        </form>
+                        @endif
                     @endif
                 </div>
                 <div class="col-sm-3 col-lg-2">
@@ -212,6 +214,12 @@
                                     <label>Cargo</label>
                                     <p>{{($user->funcion)}}</p>
                                 </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Area</label>
+                                        <p>{{($user->area->nombre ?? 'SIN AREA')}}</p>
+                                    </div>
                                 </div>
 
                             <div class="col-md-2">

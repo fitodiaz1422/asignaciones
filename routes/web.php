@@ -122,7 +122,7 @@ Route::delete('/users/{id}', ['as'=>'users.destroy' ,'uses'=>'UsersController@De
 Route::put('/users/password/update/{id}', ['as'=>'users.updatepassword' ,'uses'=>'UsersController@UpdatePassword'])
     ->middleware('rol:users.edit');
 Route::get('/users/ajax/getDisponibles/{proyecto}/{region}/{fecha}', ['as'=>'users.get.disponibles' ,'uses'=>'UsersController@getDisponibles']);
-Route::get('/users/ajax/getByArea/{proyecto}/{area}', ['as'=>'users.get.by_area' ,'uses'=>'UsersController@getByArea']);
+Route::get('/users/ajax/getByArea/{proyecto}/{fecha}/{area?}', ['as'=>'users.get.by_area' ,'uses'=>'UsersController@getByArea']);
 
 
 

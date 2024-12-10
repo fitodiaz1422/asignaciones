@@ -70,25 +70,25 @@
                 </div>
                 <hr>
                 <div class="row" id="div_user" @if($users_clientes_count > 0) @else style="display:none" @endif>
-               
+
                     <div class="col-md-12">
                         <h3>Usuario Cliente</h3>
                     </div>
                     <div class="col-md-2">
                     <div class="form-group">
-                   
+
                         <label>Seleccionar Cliente</label>
                         <select multiple="multiple" id="cliente_user" name="cliente_user[]">
                         @foreach ($clientes as $cliente)
-  
+
 						      <option value="{{$cliente->id}}" {{ $users_clientes->firstWhere('clientes_id',$cliente->id) ? 'selected' :'' }} >{{$cliente->razon_social}}</option>
-    
+
 					      @endforeach
 					    </select>
-                        
+
                     </div>
                     </div>
-                  
+
                 </div>
                 <hr>
 
@@ -281,7 +281,17 @@
                                         <input type="text" class="form-control" maxlength="50" name="funcion" value="{{($user->funcion)}}">
                                     </div>
                                     </div>
-
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Area</label>
+                                            <select class="form-control" name="area_id" >
+                                                <option value="">-- Seleccione --</option>
+                                                @foreach($areas  as $area)
+                                                    <option value="{{$area->id}}" @if($user->area_id==$area->id) selected @endif >{{$area->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        </div>
                                 <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Fecha Ingreso</label>
@@ -662,9 +672,9 @@ function usuarioCliente(){
     checkBox = document.getElementById('user_cliente');
 
     if(checkBox.checked) {
-        
+
         $('#div_user').show();
-   
+
 }
 else{
     $('#div_user').hide();

@@ -39,7 +39,8 @@ class UsersController extends Controller
         $skills=\App\Skill::all();
         $herramientas=\App\Herramienta::all();
         $notifications=\App\Notifyrole::orderby('global_group')->get();
-        return view('users.create',compact('comunas','proyectos','cargos','herramientas','roles','afps','bancos','empresas','previsiones','tipocuentas','tipocontratos','skills','notifications','clientes'));
+        $areas=\App\Area::all();
+        return view('users.create',compact('comunas','proyectos','cargos','herramientas','roles','afps','bancos','empresas','previsiones','tipocuentas','tipocontratos','skills','notifications','clientes','areas'));
     }
 
     public function store(Request $request){
@@ -74,12 +75,13 @@ class UsersController extends Controller
         $herramientas=\App\Herramienta::all();
         $notifications=\App\Notifyrole::orderby('global_group')->get();
         $users_clientes=\App\Users_Clientes::where('user_id',$id)->get();
+        $areas=\App\Area::all();
        // $users_clientes = $users_clientes->collapse();
         //$users_clientes = $users_clientes->all();
         //dd($users_clientes);
         $users_clientes_count=\App\Users_Clientes::where('user_id',$id)->count();
         $clientes =\App\Cliente::all();
-        return view('users.edit',compact('comunas','proyectos','cargos','user','roles','afps','bancos','empresas','herramientas','previsiones','tipocuentas','tipocontratos','skills','notifications','users_clientes','users_clientes_count','clientes'));
+        return view('users.edit',compact('comunas','proyectos','cargos','user','roles','afps','bancos','empresas','herramientas','previsiones','tipocuentas','tipocontratos','skills','notifications','users_clientes','users_clientes_count','clientes','areas'));
     }
 
 
@@ -160,18 +162,34 @@ class UsersController extends Controller
         return $users;
     }
 
-    public function getByArea($proyecto_id, $area_id){
-        $area=\App\Area::findorFail($area_id);
+    public function getByArea($proyecto_id, $fecha, $area_id=null){
+        if($area_id!=null){
+            $area=\App\Area::findorFail($area_id);
+            if(!$area)
+               return response()->json(['status' => 'error','message' => 'El Area no Existe!'], 400 );
+        }
         $proyecto=\App\Proyecto::findorFail($proyecto_id);
-        if(!$area)
-            return response()->json(['status' => 'error','message' => 'El Area no Existe!'], 400 );
         if(!$proyecto)
-        return response()->json(['status' => 'error','message' => 'El Proyecto no Existe!'], 400 );
+            return response()->json(['status' => 'error','message' => 'El Proyecto no Existe!'], 400 );
 
-        $users=\App\User::select('users.rut','users.name','users.apaterno','users.amaterno','areas.nombre as area')
-        ->rightjoin('areas','areas.id','=','users.area_id')
-        ->where('proyecto_id',$proyecto_id)
-        ->get();
+        $dato=DB::table('users')->selectRaw('DISTINCT users.id')
+        ->leftJoin('users_actividades','users.id','=','users_actividades.user_id')
+        ->where('proyecto_id',$proyecto->id)
+        ->whereNull('users.deleted_at')
+        ->where('fecha',str_replace("-", "", $fecha))
+        ->get()->pluck('id');
+
+
+        if($area_id){
+            $users=\App\User::select('users.rut','users.name','users.apaterno','users.amaterno','areas.nombre as area')
+            ->rightjoin('areas','areas.id','=','users.area_id')
+            ->where('areas.id',$area->id);
+        }else{
+            $users=\App\User::select('users.rut','users.name','users.apaterno','users.amaterno')->whereNull('users.area_id');
+        }
+
+
+        $users=$users->whereNotIn('users.id',$dato)->where('proyecto_id',$proyecto_id)->get();
 
         return $users;
 

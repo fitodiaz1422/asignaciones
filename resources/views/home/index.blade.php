@@ -194,7 +194,7 @@
                                         @else
                                             <a onclick="showTecnicos('{{$total->proyecto->id}}','{{$user->id}}')" class="nav-link" style="cursor:pointer">
                                         @endif
-                                            {{$user->nombre}}
+                                            {{$user->nombre ? $user->nombre : 'SIN AREA'}}
                                             <span class="float-right text-danger">
                                             {{$user->count}}</span>
                                         </a>
@@ -250,7 +250,7 @@
                                     <th>Rut</th>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    <th>Comuna</th>
+                                    <th><span id="nombre_disponible">Comuna</span></th>
                                 </tr>
                             </thead>
                             <tbody id="table_tecnicos">
@@ -285,6 +285,7 @@
             html="";
             fecha='{{str_replace("/","",str_replace("-","",$fecha))}}';
             $('#table_tecnicos').html("");
+            $('#nombre_disponible').html("Comuna");
     	    $.ajax({
 	        type: 'GET',
 	        url: "/users/ajax/getDisponibles/"+proyecto+"/"+region+"/"+fecha,
@@ -303,16 +304,18 @@
         }
         function showTecnicosByArea(proyecto,area) {
             html="";
+            fecha='{{str_replace("/","",str_replace("-","",$fecha))}}';
             $('#table_tecnicos').html("");
+            $('#nombre_disponible').html("Area");
     	    $.ajax({
 	        type: 'GET',
-	        url: "/users/ajax/getByArea/"+proyecto+"/"+area,
+	        url: "/users/ajax/getByArea/"+proyecto+"/"+fecha+"/"+area,
 	        dataType: 'json',
             success: function (data) {
                 $.each(data, function(index, element) {
                     html+="<tr>'";
                     html+='<td>'+element.rut+'</td>'+'<td>'+element.name+'</td>';
-                    html+='<td>'+element.apaterno+" "+element.amaterno+'</td>'+'<td>'+element.area+'</td>';
+                    html+='<td>'+element.apaterno+" "+element.amaterno+'</td>'+'<td>'+(element?.area  ?? 'SIN AREA' )+'</td>';
                     html+="</tr>";
                     });
                 $('#table_tecnicos').html(html);

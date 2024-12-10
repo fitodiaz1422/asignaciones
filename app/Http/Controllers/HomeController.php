@@ -103,27 +103,26 @@ class HomeController extends Controller
             if($roles){
                 $dato=DB::table('users')->selectRaw('DISTINCT users.id')
                 ->leftJoin('users_actividades','users.id','=','users_actividades.user_id')
-                ->join('roles_users', function ($join) use ($roles, $roles2) {
-                    $join->on('users.id', '=', 'roles_users.user_id')
-                         ->whereIn('roles_users.role_id',[$roles->id, $roles2->id]);
-                })
                 ->where('proyecto_id',$proyecto->id)
                 ->whereNull('users.deleted_at')
-                ->where('fecha',str_replace("-", "", $fecha))
-                ->get();
+                ->where('fecha',str_replace("-", "", $fecha));
+
+                if(!$proyecto->by_area)
+                    $dato=$dato->join('roles_users', function ($join) use ($roles, $roles2) {
+                        $join->on('users.id', '=', 'roles_users.user_id')
+                             ->whereIn('roles_users.role_id',[$roles->id, $roles2->id]);
+                    });
+                $dato=$dato->get();
 
                 foreach ($dato as $value) {
                     $arr[]=$value->id;
                 }
+
                 $total->proyecto=$proyecto;
                 $total->usados=$dato->count();
                 if($proyecto->by_area){
-                    $total->users=DB::table('users')->selectRaw('areas.id, areas.nombre, count(areas.id) as count')
-                    ->rightjoin('areas','areas.id','=','users.area_id')
-                    ->rightjoin('roles_users', function ($join) use ($roles, $roles2) {
-                        $join->on('users.id', '=', 'roles_users.user_id')
-                             ->whereIn('roles_users.role_id',[$roles->id,$roles2->id]);
-                    })
+                    $total->users=DB::table('users')->selectRaw('areas.id, areas.nombre, count(IFNULL(areas.id,1)) as count')
+                    ->leftjoin('areas','areas.id','=','users.area_id')
                     ->where('proyecto_id',$proyecto->id)
                     ->whereNotIn('users.id',$arr)
                     ->whereNull('users.deleted_at')

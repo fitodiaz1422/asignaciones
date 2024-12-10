@@ -60,6 +60,7 @@ class CreateUsersRepository
         $user->monto_ges=$data['monto_ges'];
         $user->trabajador_joven=$data['trabajador_joven'];
         $user->cargo_id=$data['cargo_id'];
+        $user->area_id=$data['area_id'] ?? null;
 
         if(isset($data['user_cliente']))
         {
@@ -79,9 +80,9 @@ class CreateUsersRepository
         if(isset($data['user_cliente']))
         {
          $this->attachUsersClientes($user,($data['cliente_user']) ?? null);
-        }    
+        }
 
-       
+
 
 
 
@@ -136,6 +137,8 @@ class CreateUsersRepository
         $user->monto_ges=$data['monto_ges'];
         $user->trabajador_joven=$data['trabajador_joven'];
         $user->cargo_id=$data['cargo_id'];
+        $user->area_id=$data['area_id'] ?? null;
+
         if(isset($data['user_cliente']))
         {
             $user->usuario_cliente = "SI";
@@ -153,7 +156,7 @@ class CreateUsersRepository
         $this->syncSkills($user,($data['skills']) ?? null);
         $this->syncHerramientas($user,($data['herramientas']) ?? null);
         $this->syncUsersClientes($user,($data['cliente_user']) ?? null);
-        
+
 
 
 
