@@ -8,6 +8,8 @@ services:
      # - APP_ENV=production
     #  - APP_KEY=${APP_KEY}   # Debes configurar esta clave en las variables de entorno
     restart: unless-stopped
+    volumes:
+      - ./storage/app/public:/var/www/html/storage/app/public
     networks:
       - asignaciones_network
     extra_hosts:
@@ -17,6 +19,8 @@ services:
       context: .
       dockerfile: docker/nginx/Dockerfile
     container_name: asignaciones_nginx
+    volumes:
+      - ./storage/app/public:/var/www/html/storage/app/public
     ports:
       - "8010:80"
     restart: unless-stopped

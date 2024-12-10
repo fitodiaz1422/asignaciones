@@ -39,6 +39,8 @@ USER www-data
 
 RUN composer install
 
+RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage
+
 EXPOSE 9000
 
 CMD ["php-fpm"]
