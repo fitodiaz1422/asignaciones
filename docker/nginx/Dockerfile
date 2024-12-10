@@ -2,7 +2,7 @@ FROM nginx:1.19.6-alpine
 
 WORKDIR /var/www/html
 
-COPY . /var/www/html
+COPY ./public /var/www/html/public
 
 RUN rm /etc/nginx/conf.d/default.conf
 

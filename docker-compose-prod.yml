@@ -1,8 +1,8 @@
 services:
   app:
     build:
-      context: docker/php
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/php/Dockerfile
     container_name: asignaciones_app
     #environment:
      # - APP_ENV=production
@@ -10,10 +10,12 @@ services:
     restart: unless-stopped
     networks:
       - asignaciones_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   nginx:
     build:
-      context: docker/nginx
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/nginx/Dockerfile
     container_name: asignaciones_nginx
     ports:
       - "8010:80"
