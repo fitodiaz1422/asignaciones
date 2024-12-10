@@ -24,6 +24,10 @@ RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/' /usr/local/etc/php/php.i
 
 COPY . /var/www/html
 
+RUN mkdir -p /var/www/html/.config
+RUN chown -R www-data:www-data /var/www/html/.config
+RUN chmod -R 775 /var/www/html/.config
+
 RUN mkdir -p /var/www/html/storage/framework/cache/data
 RUN chown -R www-data:www-data /var/www/html
 RUN chown -R www-data:www-data /var/www/html/storage
