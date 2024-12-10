@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    container_name: asignaciones_app
+    #environment:
+     # - APP_ENV=production
+    #  - APP_KEY=${APP_KEY}   # Debes configurar esta clave en las variables de entorno
+    restart: unless-stopped
+    networks:
+      - asignaciones_network
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    container_name: asignaciones_nginx
+    ports:
+      - "8010:80"
+    restart: unless-stopped
+    depends_on:
+      - app
+    networks:
+      - asignaciones_network
+networks:
+  asignaciones_network:
+    driver: bridge
