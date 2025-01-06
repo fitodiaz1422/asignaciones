@@ -24,23 +24,8 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-sm-4 col-lg-6">
+                <div class="col-sm-6 col-lg-10">
                     <h1>{{$user->name." ".$user->apaterno}}</h1>
-                </div>
-                <div class="col-sm-2 col-lg-2">
-                    @if($user->deleted_at)
-                        <h1 style="background-color:red; padding:10px;color:#f0f0f0;text-align:center">Eliminado</h1>
-                    @endif
-                </div>
-                <div class="col-sm-3 col-lg-2">
-                    @if($user->deleted_at)
-                        @if(auth()->user()->hasRoles('users.destroy'))
-                        <form action="{{route('users.reactive',$user->id)}}" method="POST" >
-                            @csrf
-                            <button type="submit" class="btn btn-app bg-gradient-info btn-xs" ><i class="fas fa-check"></i></button>
-                        </form>
-                        @endif
-                    @endif
                 </div>
                 <div class="col-sm-3 col-lg-2">
                     <a class="btn btn-app bg-gradient-success btn-xs" href="{{route('users.edit',$user->id)}}"><br><i class="fas fa-edit"></i></a>
@@ -68,12 +53,6 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Datos</h3>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Correo</label>
-                                    <p>{{($user->email)}}</p>
-                                </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -214,12 +193,6 @@
                                     <label>Cargo</label>
                                     <p>{{($user->funcion)}}</p>
                                 </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Area</label>
-                                        <p>{{($user->area->nombre ?? 'SIN AREA')}}</p>
-                                    </div>
                                 </div>
 
                             <div class="col-md-2">

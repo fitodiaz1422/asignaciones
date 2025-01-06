@@ -35,25 +35,19 @@
           <table class="table table-striped table-bordered table-hover table-sm dt-responsive nowrap compact" id="dateTable1" style="width:100%;cursor:pointer">
               <thead  class="thead-dark">
                   <tr>
-                      <th></th>
-                      <th>Rut</th>    
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Email</th>
                       <th>Grupo</th>
-                      <th>Status</th>
                   </tr>
               </thead>
               <tbody>
                   @foreach($users as $user)
                         <tr {{generateLink('users.show','users.show',$user->id)}} >
-                          <td>{{$user->id }}</td>  
-                          <td>{{ $user->rut }}</td>  
                           <td>{{ $user->name }}</td>
                           <td>{{ $user->apaterno.' '.$user->amaterno}}</td>
                           <td>{{ $user->email }}</td>
                           <td>{{ ($user->Cargo)?$user->Cargo->nombre:"Sin Grupo" }}</td>
-                          <td>{!! $user->deleted_at ? '<span class="right badge badge-danger">Inactivo</span>' : '<span class="right badge badge-success">Activo</span>' !!}</td>
                       </tr>
                   @endforeach
               </tbody>
@@ -72,13 +66,9 @@
 <script>
     $(document).ready(function() {
         $('#dateTable1').DataTable( {
-            "order": [[6,"asc"],[ 0, "asc" ]],
+            "order": [ 0, "asc" ],
             responsive:true,
-            "pageLength": 25,
-    'columnDefs' : [
-        //hide the second & fourth column
-        { 'visible': false, 'targets': [0] }
-    ]
+            "pageLength": 25
         } );
     } );
 </script>

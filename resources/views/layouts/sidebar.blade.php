@@ -56,39 +56,12 @@
                 </li>
             @endif
             @if (auth()->user()->hasRoles('asistencia.index'))
-            <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-universal-access"></i>
-                  <p>
-                    ASISTENCIA
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route ('asistencia.index')}}" class="nav-link {{ activeMenu('asistencia/asistencia*') }}">
-                        <i class="fas fa-ellipsis-h nav-icon"></i>
-                        <p>ASISTENCIA</p>
-                    </a>
-                  </li>
-                  @if (auth()->user()->hasRoles('cartaamonestacion.index'))
-                <li class="nav-item">
-                    <a href="{{ route ('carta_amonestacion.index')}}" class="nav-link {{ activeMenu('asistencia/carta_amonestacion*') }}">
-                        <i class="fas fa-ellipsis-h nav-icon"></i>
-                        <p>CARTA DE AMONESTACIONES</p>
-                    </a>
-                  </li>
-                  @endif
-                  @if (auth()->user()->hasRoles('bono.index'))
-                <li class="nav-item">
-                    <a href="{{ route ('bono.index')}}" class="nav-link {{ activeMenu('asistencia/bono*') }}">
-                        <i class="fas fa-ellipsis-h nav-icon"></i>
-                        <p>ADMINISTRACION DE BONOS</p>
-                    </a>
-                  </li>
-                  @endif
-                
-</ul>
+                  <a href="{{ route ('asistencia.index')}}" class="nav-link {{ activeMenu('asistencia*') }}">
+                    <i class="nav-icon fas fa-universal-access"></i>
+                    <p>ASISTENCIA</p>
+                  </a>
+                </li>
             @endif
             @if (auth()->user()->hasRoles('cotizaciones.index'))
                 <li class="nav-item">
@@ -112,14 +85,6 @@
                       <a href="{{ route ('reportes.asistencia')}}" class="nav-link {{ activeMenu('reportes/asistencia*') }}">
                         <i class="fas fa-ellipsis-h nav-icon"></i>
                         <p>ASISTENCIA</p>
-                      </a>
-                    </li>
-                    @endif
-                    @if (auth()->user()->hasRoles('reportes.atraso'))
-                    <li class="nav-item">
-                      <a href="{{ route ('reportes.atraso')}}" class="nav-link {{ activeMenu('reportes/atraso*') }}">
-                        <i class="fas fa-ellipsis-h nav-icon"></i>
-                        <p>ATRASO</p>
                       </a>
                     </li>
                     @endif

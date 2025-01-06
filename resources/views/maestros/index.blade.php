@@ -54,9 +54,6 @@
                  <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#tab_11" role="tab">Centro de Costo</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#tab_12" role="tab">Motivos Actividad</a>
-                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
@@ -178,7 +175,6 @@
                                 <tr>
                                     <th>Tipo</th>
                                     <th>Nombre</th>
-                                    <th>Estado</th>
                                     <th width="10px">Color</th>
                                     <th width="40px"></th>
                                     <th width="10px"></th>
@@ -189,10 +185,9 @@
                                       <tr>
                                         <td>{{ $asistencia->tipo }}</td>
                                         <td>{{ $asistencia->nombre}}</td>
-                                        <td>{{ $asistencia->estado}}</td>
                                         <td style="background-color:#{{($asistencia->color)}}">#{{($asistencia->color)}}</td>
                                         <td></td>
-                                        <td><button class="btn btn-block bg-gradient-success btn-sm " onclick="editAsistencia('{{$asistencia->tipo}}','{{$asistencia->nombre}}','#{{$asistencia->color}}','{{ $asistencia->estado}}')"  type="button"><i class="fas fa-edit "></i></button></td>
+                                        <td><button class="btn btn-block bg-gradient-success btn-sm " onclick="editAsistencia('{{$asistencia->tipo}}','{{$asistencia->nombre}}','#{{$asistencia->color}}')"  type="button"><i class="fas fa-edit "></i></button></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -351,41 +346,6 @@
                                         <td>{{ $costo->descripcion}}</td>
                                         <td>{{ $costo->estado}}</td>
                                         <td><button class="btn btn-block bg-gradient-success btn-sm "onclick="editCcosto('{{$costo->id}}','{{$costo->codigo}}','{{$costo->descripcion}}','{{$costo->estado}}')"   type="button"><i class="fas fa-edit "></i></button></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="tab-pane" id="tab_12">
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-10">
-                            <h1>Motivos Actividad</h1>
-                        </div>
-                        <div class="col-sm-3 col-lg-2">
-                            <button class="btn btn-app bg-gradient-success btn-xs" data-toggle="modal" data-target="#modal_motivo" type="button"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <table class="table table-striped table-bordered table-hover table-sm dt-responsive nowrap compact" id="table_motivo" style="width:100%">
-                            <thead  class="thead-dark">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Tipo</th>
-                                    <th>estado</th>
-                                    <th width="10px"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($motivos as $motivo)
-                                      <tr>
-                                        <td>{{ $motivo->id }}</td>
-                                        <td>{{ $motivo->name}}</td>
-                                        <td>{{ $motivo->tipo}}</td>
-                                        <td>{{ $motivo->estado}}</td>
-                                        <td><button class="btn btn-block bg-gradient-success btn-sm "onclick="editMotivo('{{$motivo->id}}','{{$motivo->name}}','{{$motivo->tipo}}','{{$motivo->estado}}')"   type="button"><i class="fas fa-edit "></i></button></td>
-                                    
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -665,51 +625,6 @@
         </div>
       </div>
 
-       <!-- Modals motivo-->
-    <div class="modal fade" id="modal_motivo" >
-        <div class="modal-dialog">
-            <form action="{{route('maestros.motivo.store')}}" method="post" >
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Crea Motivo Actividad</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" class="form-control" maxlength="252" name="nombre_crear_motivo" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo</label>
-                             <select class="form-control" name="tipo_crear_motivo"  required>
-                            <option value="ELIMINAR">ELIMINAR</option>
-                            
-                                <option value="MODIFICAR">MODIFICAR</option>
-                            
-                        </select>
-                        </div>
-                         <div class="form-group">
-                            <label>estado</label>
-                             <select class="form-control" name="estado_crear_motivo"  required>
-                            <option value="ACTIVO">ACTIVO</option>
-                            
-                                <option value="BLOQUEADO">BLOQUEADO</option>
-                            
-                        </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-      </div>
-
         <!-- Modals Prevision-->
     <div class="modal fade" id="modal_salud" >
         <div class="modal-dialog">
@@ -940,14 +855,6 @@
                             </div>
                             <!-- /.input group -->
                           </div>
-
-                          <div class="form-group">
-                        <label>Estado</label>
-                        <select class="form-control" name="estado" id="estado_asistencia" required>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="DESACTIVADO">DESACTIVADO</option>
-                        </select>
-                    </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <input type="hidden" name='tipo' id="asistencia_tipo">
@@ -1055,53 +962,6 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <input type="hidden" name='id' id="costo_id">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-      </div>
-
-       <!-- Modals Costo-->
-    <div class="modal fade" id="modal_edit_motivo" >
-        <div class="modal-dialog">
-            <form action="{{route('maestros.motivo.update')}}" method="post" >
-                @csrf
-                @method('PUT')
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edita Motivo Actividad</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" class="form-control" maxlength="252" id="motivo_nombre" name="motivo_nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo</label>
-                             <select class="form-control" name="motivo_tipo" id="motivo_tipo" required>
-                            <option value="ELIMINAR">ELIMINAR</option>
-                            
-                                <option value="MODIFICAR">MODIFICAR</option>
-                            
-                        </select>
-                        </div>
-                        <div class="form-group">
-                            <label>estado</label>
-                             <select class="form-control" name="motivo_estado" id="motivo_estado" required>
-                            <option value="ACTIVO">ACTIVO</option>
-                            
-                                <option value="BLOQUEADO">BLOQUEADO</option>
-                            
-                        </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <input type="hidden" name='motivo_id' id="motivo_id">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
@@ -1235,12 +1095,11 @@
         $('#modal_edit_proyecto').modal('show')
     }
 
-    function editAsistencia(tipo,nombre,color,estado){
+    function editAsistencia(tipo,nombre,color){
         $('#asistencia_tipo').val(tipo);
         $('#asistencia_nombre').val(nombre);
         $('#asistencia_color').val(color);
         $('.my-colorpicker2 .fa-square').css('color', color);
-        $('#estado_asistencia').val(estado);
         $('#modal_edit_asistencia').modal('show')
     }
 
@@ -1270,15 +1129,6 @@
         $('#costo_estado').val(estado);
         $('#modal_edit_costo').modal('show')
     }
-    function editMotivo(id,codigo,descripcion,estado){
-        $('#motivo_id').val(id);
-        $('#motivo_nombre').val(codigo);
-        $('#motivo_tipo').val(descripcion);
-        $('#motivo_estado').val(estado);
-        $('#modal_edit_motivo').modal('show')
-    }
-
-    
 
     function editSalud(id,nombre,valor){
         $('#salud_id').val(id);

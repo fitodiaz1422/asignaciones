@@ -3,7 +3,6 @@
 @section('css')
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-    <link href="{{ asset('plugins/multi-select/css/multi-select.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 @endsection
 
@@ -36,35 +35,6 @@
                 </div>
             </div>
             <div class="card-body">
-            <div class="row">
-            <div class="col-md-2">
-                    <div class="form-group">
-                <label for="">Crear Usuario Cliente</label>
-                   <input type="checkbox" id="user_cliente" name="user_cliente" onclick="usuarioCliente()">
-                   </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row" id="div_user" style="display:none">
-
-                    <div class="col-md-12">
-                        <h3>Usuario Cliente</h3>
-                    </div>
-                    <div class="col-md-2">
-                    <div class="form-group">
-
-                        <label>Seleccionar Cliente</label>
-                        <select multiple="multiple" id="cliente_user" name="cliente_user[]">
-							@foreach ($clientes as $cliente)
-						      <option value={{$cliente->id}}>{{$cliente->razon_social}}</option>
-					      @endforeach
-					    </select>
-
-                    </div>
-                    </div>
-
-                </div>
-                <hr>
                 <div class="row">
                     <div class="col-md-12">
                         <h3>Fotografia</h3>
@@ -75,7 +45,6 @@
                 </div>
                 <hr>
                 <div class="row">
-
                     <div class="col-md-12">
                         <h3>Datos</h3>
                     </div>
@@ -265,17 +234,7 @@
                             <input type="text" class="form-control" maxlength="50" name="funcion" value="{{(old('funcion'))}}">
                         </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Area</label>
-                                <select class="form-control" name="area_id" >
-                                    <option value="">-- Seleccione --</option>
-                                    @foreach($areas  as $area)
-                                        <option value="{{$area->id}}">{{$area->nombre}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            </div>
+
                     <div class="col-md-2">
                     <div class="form-group">
                         <label>Fecha Ingreso</label>
@@ -561,7 +520,6 @@
 
 @section('scripts')
 <script src="{{asset('plugins/select2/js/select2.min.js')}}"></script>
-<script src="{{ asset('plugins/multi-select/js/jquery.multi-select.js') }}"></script>
 <script type="text/javascript">
 	function getRolesGroup(value){
 		if(value==0){
@@ -625,24 +583,10 @@ function errorDialog(text){
     });
 }
 
-function usuarioCliente(){
-    checkBox = document.getElementById('user_cliente');
-
-    if(checkBox.checked) {
-
-        $('#div_user').show();
-
-}
-else{
-    $('#div_user').hide();
-}
-}
-
 
     $(document).ready(function() {
         $('#select_skills').select2();
         $('#select_herramientas').select2();
-        $('#cliente_user').multiSelect();
         $('#afoto1').click(function(){
             $('#file-input1').click();
         });
