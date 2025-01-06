@@ -29,6 +29,7 @@ RUN chown -R www-data:www-data /var/www/html/.config
 RUN chmod -R 775 /var/www/html/.config
 
 RUN mkdir -p /var/www/html/storage/framework/cache/data
+RUN mkdir -p /var/www/html/storage/app
 RUN chown -R www-data:www-data /var/www/html
 RUN chown -R www-data:www-data /var/www/html/storage
 RUN chmod -R 775 /var/www/html/storage
