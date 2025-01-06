@@ -147,6 +147,18 @@ class HomeController extends Controller
                     $totales[]=$total;
 
             }
+
+
+
+
+
+
+
+
+            
+
+
+
         }
 
         $tab_active=($request->tab_active)??'custom-tabs-two-home-tab';

@@ -25,7 +25,7 @@ class UsersController extends Controller
     }
 
     public function create(){
-        $comunas=\App\Comuna::all();
+        $comunas=\App\Comuna::orderby('nombre','asc')->get();
         $clientes =\App\Cliente::all();
         $proyectos=\App\Proyecto::where('estado','ACTIVO')->get();
         $cargos=\App\Cargo::all();
@@ -35,7 +35,7 @@ class UsersController extends Controller
         $afps=\App\Afp::all();
         $previsiones=\App\Prevision::all();
         $tipocuentas=\App\TipoCuenta::all();
-        $tipocontratos=\App\TipoContrato::all();
+        $tipocontratos=\App\TipoContrato::orderby('nombre','desc')->get();
         $skills=\App\Skill::all();
         $herramientas=\App\Herramienta::all();
         $notifications=\App\Notifyrole::orderby('global_group')->get();
@@ -61,7 +61,7 @@ class UsersController extends Controller
 
     public function edit($id){
         $user=\App\User::findorFail($id);
-        $comunas=\App\Comuna::all();
+        $comunas=\App\Comuna::orderby('nombre','asc')->get();
         $proyectos=\App\Proyecto::where('estado','ACTIVO')->get();
         $cargos=\App\Cargo::all();
         $roles=\App\Role::orderby('global_group')->get();
@@ -70,17 +70,17 @@ class UsersController extends Controller
         $afps=\App\Afp::all();
         $previsiones=\App\Prevision::all();
         $tipocuentas=\App\TipoCuenta::all();
-        $tipocontratos=\App\TipoContrato::all();
+        $tipocontratos=\App\TipoContrato::orderby('nombre','desc')->get();
         $skills=\App\Skill::all();
         $herramientas=\App\Herramienta::all();
         $notifications=\App\Notifyrole::orderby('global_group')->get();
         $users_clientes=\App\Users_Clientes::where('user_id',$id)->get();
-        $areas=\App\Area::all();
        // $users_clientes = $users_clientes->collapse();
         //$users_clientes = $users_clientes->all();
         //dd($users_clientes);
         $users_clientes_count=\App\Users_Clientes::where('user_id',$id)->count();
         $clientes =\App\Cliente::all();
+        $areas=\App\Area::all();
         return view('users.edit',compact('comunas','proyectos','cargos','user','roles','afps','bancos','empresas','herramientas','previsiones','tipocuentas','tipocontratos','skills','notifications','users_clientes','users_clientes_count','clientes','areas'));
     }
 
@@ -124,7 +124,7 @@ class UsersController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with(['info'=>"Usuario Eliminado Correctamente!",'color'=>"bg-green"]);
     }
-
+    
     public function reactive($id){
         $user=\App\User::withTrashed()->findorFail($id);
         $user->restore();
@@ -136,7 +136,7 @@ class UsersController extends Controller
         $roles2=\App\Role::where('name','ver.grafico')->first();
 
 
-
+        
         $dato=DB::table('users')->selectRaw('DISTINCT users.id')
         ->leftJoin('users_actividades','users.id','=','users_actividades.user_id')
         ->join('roles_users', function ($join) use ($roles,$fecha,$roles2) {

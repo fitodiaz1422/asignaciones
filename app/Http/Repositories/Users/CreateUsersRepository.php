@@ -80,9 +80,9 @@ class CreateUsersRepository
         if(isset($data['user_cliente']))
         {
          $this->attachUsersClientes($user,($data['cliente_user']) ?? null);
-        }
+        }    
 
-
+       
 
 
 
@@ -156,7 +156,7 @@ class CreateUsersRepository
         $this->syncSkills($user,($data['skills']) ?? null);
         $this->syncHerramientas($user,($data['herramientas']) ?? null);
         $this->syncUsersClientes($user,($data['cliente_user']) ?? null);
-
+        
 
 
 

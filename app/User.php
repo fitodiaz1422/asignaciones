@@ -24,10 +24,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Users_Clientes::Class,'users_clientes','user_id','clientes_id');
     }
 
-    public function area(){
-        return $this->belongsTo(Area::Class);
-    }
-
     public function notifyroles(){
         return $this->belongsToMany(Notifyrole::class,'notifyroles_users');
     }
@@ -40,6 +36,10 @@ class User extends Authenticatable
         }
 
       return false;
+    }
+    
+    public function area(){
+        return $this->belongsTo(Area::Class);
     }
 
     public function hasNotifyroles($notifyroles){

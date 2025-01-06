@@ -12,13 +12,14 @@ class DepositosController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(){
+    public function index(Request $request){
+        $date=$request->fecha ? $request->fecha : date('Y-m');
         $depositos=\App\Deposito::where('deposito_depositado',null)->where('deposito_solicitado','>',0)->orderBy('fecha_para_deposito')
-        ->with('usuario')->orderBy('user_id')->get();
+        ->with('usuario')->orderBy('fecha_para_deposito')->whereRaw('MONTH(fecha_para_deposito) = '.intval(substr($date,5)).' and YEAR(fecha_para_deposito) =  '.substr($date,0,4) )->get();
         $depositados=\App\Deposito::where('deposito_depositado','>',0)->where('deposito_solicitado','>',0)->whereRaw('month(fecha_para_deposito) = month(now())')->whereRaw('year(fecha_para_deposito) = year(now())')->orderBy('fecha_para_deposito')
         ->with('usuario')->orderBy('user_id')->get();
         $max=$depositos->max('cant');
-    	return view('depositos.index',compact('depositos','max','depositados'));
+    	return view('depositos.index',compact('depositos','max','depositados','date'));
     }
 
     public function store(Request $request){

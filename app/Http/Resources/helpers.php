@@ -187,6 +187,6 @@ function getNotifiColor($type){
 
     return $contar_Inasistencia;
 
-
+   
 
     }

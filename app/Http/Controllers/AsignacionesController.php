@@ -73,7 +73,7 @@ class AsignacionesController extends Controller
             : $users->get();
             
 
-    	$comunas=Comuna::with('Region')->get();
+    	$comunas=Comuna::query()->orderby('nombre','asc')->with('Region')->get();
     	
     	$costo = DB::table('centro_costos')->where('estado','=','ACTIVO')->get();
     	
