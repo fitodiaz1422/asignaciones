@@ -2,8 +2,8 @@ FROM php:7.3.33-fpm-bullseye
 
 WORKDIR /var/www/html
 
-RUN usermod -u 1000 www-data
-RUN groupmod -g 1000 www-data
+RUN usermod -u 33 www-data
+RUN groupmod -g 33 www-data
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y mariadb-client libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libc-client-dev libkrb5-dev
