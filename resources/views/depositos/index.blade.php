@@ -34,10 +34,29 @@
 
         	</div>
         </div>
-
-
+		<ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#tab_1" role="tab"  aria-selected="true">Pendientes</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#tab_2" role="tab">Finalizadas</a>
+			</li>
+			
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab_1">
               <!-- /.card-header -->
+              <form action="{{route('depositos.index')}}" method="GET">
 			  <div class="card-body">
+			      <div class="col-sm-12 col-lg-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                            <input type="hidden" name="tab_active" id="tab_active" value="1">
+                            <input type="month" class="form-control" name="fecha" value="{{$date}}" onchange="submit()">
+                    </div>
+                </div>
 				<table class="table table-striped table-bordered table-hover table-sm dt-responsive" id="dateTable1" style="width:100%;cursor:pointer">
 					<thead  class="thead-dark">
 						<tr>
@@ -66,7 +85,44 @@
 						@endforeach
 					</tbody>
 				</table>
+			  </div>
+			  </form>
 			</div>
+			<div class="tab-pane" id="tab_2">
+					<table class="table table-striped table-bordered table-hover table-sm dt-responsive" id="dateTable2" style="width:100%;cursor:pointer">
+						<thead  class="thead-dark">
+							<tr>
+								<th>Coordinador</th>
+								<th>Region Usuario</th>
+								<th>Proyecto</th>
+								<th>Ciudad de Trabajo</th>
+								<th data-priority="1">Nombre</th>
+								<th data-priority="2">Fecha para Deposito</th>
+								<th data-priority="3" >Monto</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($depositados as $deposito)
+	
+							@php($username=(($deposito->usuario->name)?? 'Usuario')." ".(($deposito->usuario->apaterno)?? 'Eliminado')." ".(($deposito->usuario->amaterno)??''))
+							<tr ondblclick="getDepositado('{{$deposito->actividad_id}}')" >
+								<td>{{$deposito->coordinacion_name}}</td>
+								<td>{{($deposito->usuario->Comuna->nombre)??''}}</td>
+								<td>{{($deposito->usuario->Proyecto->nombre) ??''}}</td>
+								<td>{{($deposito->Actividad->Comuna->nombre) ??''}}</td>
+								<td>{{$username}}</td>
+								<td>{{$deposito->fecha_para_deposito}}</td>
+								<td align="center" >{{$deposito->deposito_solicitado}}</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
+				
+			</div>	
+
+		</div><!-- /.final de tabcontent -->
+
+
         <!-- /.card-body -->
       </div>
 	  <!-- /.card -->
@@ -98,7 +154,7 @@
 										</div>
 										<div class="col-sm-12"><br><br>
 											<div class="form-group">
-												<label for="exampleInputFile">Subir Comprobante</label>
+												<label for="exampleInputFile">Comprobante</label>
 												<div class="input-group">
 												  <div class="custom-file">
 													<input type="file" class="custom-file-input" name="archivo" required id="exampleInputFile">
@@ -132,6 +188,58 @@
 
 
     </section>
+ <!-- Modals Proyecto-->
+ <div class="modal fade" id="modal_deposito_finalizado" >
+    <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Tarea: <span id="mdlNombre_depositado"></span></h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">×</span>
+					</button>
+				  </div>
+					  <div class="modal-body">
+						  <div class="card-body">
+							  <div class="row">
+								  <div class="col-sm-6">
+										<span id="mdlCuerpo_depositado"></span>
+								  </div>
+								  <div class="col-sm-6">
+	  
+										  <div class="row">
+	  
+											  <div class="col-sm-6">
+												  <p>Monto Depositado</p>
+												  <input type="number" min="1" class="form-control"  name="monto" id="monto_depositado"/>
+											  </div>
+											  <div class="col-sm-12"><br><br>
+												  <div class="form-group">
+													  <label for="exampleInputFile">Subir Comprobante</label>
+													  <div class="input-group">
+														<div class="custom-file">
+														  <input type="file" class="custom-file-input" name="archivo" required id="exampleInputFile">
+														  <label class="custom-file-label" for="exampleInputFile">Seleccione Archivo</label>
+														</div>
+													  </div>
+													</div>
+											  </div>
+											  <input type="hidden" name="actividad_id" id="actividadIniFin"/>
+											  <div class="col-sm-12">
+												
+											  </div>
+										  </div>
+	  
+								  </div>
+							  </div>
+	  
+						  </div>
+				   </div>
+					  <div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					  </div>
+            </div>
+    </div>
+  </div>
 
 
 
@@ -170,12 +278,42 @@
 
 	}
 
+	
+
+	function getDepositado(act_id) {
+	    var token = '{{csrf_token()}}';
+	    var data={id:act_id,_token:token};
+	    $.ajax({
+	        type: 'POST',
+	        url: '{{route('asignaciones.get_ajax_actividad')}}',
+	        dataType: 'json',
+	        data: data,
+	        success: function (data) {
+				console.log(data);
+	        	$('#mdlNombre_depositado').html(data.actividad.nombre);
+	    		$('#actividadIniFin').val(data.actividad.id);
+	        	$('#mdlCuerpo_depositado').html(data.actividad.descripcion.replace(/\n/g, "</br>"));
+				
+				$('#monto_depositado').val(data.deposito.deposito_depositado);
+	        	$('#modal_deposito_finalizado').modal('show')
+	       },
+	        error: function (request, status, error) {
+	        	$('#mdlNombre').html("");
+	    		$('#actividadIniFin').val("");
+	        	$('#mdlCuerpo').html("");
+	        }
+		})
+
+	}
+
 $(document).ready(function() {
   bsCustomFileInput.init();
   $(function () {
     $('#dateTable1').DataTable({
+		pageLength: 25,
         responsive: true,
-        ordering:false,
+        ordering:true,
+        order:[[4,'asc'],[5,'desc']]
     });
   });
 

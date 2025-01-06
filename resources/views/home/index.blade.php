@@ -20,6 +20,16 @@
 	  </div>
 	</div>
 
+        @if(auth()->user()->usuario_cliente == "SI" || auth()->user()->hasRoles('permisos.tecnico'))
+        <div class="row clearfix" style="padding:20px 20px 0 20px">
+            <div class="col-sm-12 col-lg-12">
+            <img src="{{asset('img/logo.png')}}" alt="Logo de empresa">
+
+</div>
+</div>
+
+    @else
+
 
 
 
@@ -50,6 +60,9 @@
                 @php($graf=array())
                 @php($i=0)
                 @foreach ($totales as $total)
+                
+                    @if (auth()->user()->hasRoles('ver_residente_pjud'))
+                      @if ($total->proyecto->id == 13)
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
@@ -82,7 +95,7 @@
                             <ul class="nav nav-pills flex-column">
                                 @foreach ($total->users as $user)
                                     <li class="nav-item">
-                                        <a onclick="showTecnicos('{{$total->proyecto->id}}','{{$user->id}}')" class="nav-link" style="cursor:pointer">
+                                        <a  class="nav-link" style="cursor:pointer">
                                             {{$user->nombre}}
                                             <span class="float-right text-danger">
                                             {{$user->count}}</span>
@@ -94,6 +107,105 @@
 
                         </div>
                     </div>
+                     @endif
+
+                     @if ($total->proyecto->id == 12)
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                            <h3 class="card-title">{{$total->proyecto->nombre}}</h3>
+                            </div>
+
+                            <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                <div class="chart-responsive">
+                                    <canvas id="pieChart{{$i}}" height="161" width="322" class="chartjs-render-monitor" style=""></canvas>
+                                </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                <ul class="chart-legend clearfix">
+                                    <li><i class="far fa-circle text-danger"></i> Usados {{$total->usados}}</li>
+                                    <li><i class="far fa-circle text-success"></i> Sin Uso {{($total->total)}}</li>
+                                    @php($graf[$i++]=[$total->total,$total->usados])
+                                </ul>
+                                </div>
+
+                            </div>
+
+                            </div>
+
+                            <div class="card-footer bg-white ">
+                                <hr>
+                            <ul class="nav nav-pills flex-column">
+                                @foreach ($total->users as $user)
+                                    <li class="nav-item">
+                                        <a  class="nav-link" style="cursor:pointer">
+                                            {{$user->nombre}}
+                                            <span class="float-right text-danger">
+                                            {{$user->count}}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                     @endif
+
+                     @else
+                     <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                            <h3 class="card-title">{{$total->proyecto->nombre}}</h3>
+                            </div>
+
+                            <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                <div class="chart-responsive">
+                                    <canvas id="pieChart{{$i}}" height="161" width="322" class="chartjs-render-monitor" style=""></canvas>
+                                </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                <ul class="chart-legend clearfix">
+                                    <li><i class="far fa-circle text-danger"></i> Usados {{$total->usados}}</li>
+                                    <li><i class="far fa-circle text-success"></i> Sin Uso {{($total->total)}}</li>
+                                    @php($graf[$i++]=[$total->total,$total->usados])
+                                </ul>
+                                </div>
+
+                            </div>
+
+                            </div>
+
+                            <div class="card-footer bg-white ">
+                                <hr>
+                            <ul class="nav nav-pills flex-column">
+                                @foreach ($total->users as $user)
+                                    <li class="nav-item">
+                                        @if($total->proyecto->by_area)
+                                            <a onclick="showTecnicosByArea('{{$total->proyecto->id}}','{{$user->id}}')" class="nav-link" style="cursor:pointer">
+                                        @else
+                                            <a onclick="showTecnicos('{{$total->proyecto->id}}','{{$user->id}}')" class="nav-link" style="cursor:pointer">
+                                        @endif
+                                            {{$user->nombre ? $user->nombre : 'SIN AREA'}}
+                                            <span class="float-right text-danger">
+                                            {{$user->count}}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -138,7 +250,7 @@
                                     <th>Rut</th>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    <th>Comuna</th>
+                                    <th><span id="nombre_disponible">Comuna</span></th>
                                 </tr>
                             </thead>
                             <tbody id="table_tecnicos">
@@ -173,6 +285,7 @@
             html="";
             fecha='{{str_replace("/","",str_replace("-","",$fecha))}}';
             $('#table_tecnicos').html("");
+            $('#nombre_disponible').html("Comuna");
     	    $.ajax({
 	        type: 'GET',
 	        url: "/users/ajax/getDisponibles/"+proyecto+"/"+region+"/"+fecha,
@@ -182,6 +295,27 @@
                     html+="<tr>'";
                     html+='<td>'+element.rut+'</td>'+'<td>'+element.name+'</td>';
                     html+='<td>'+element.apaterno+" "+element.amaterno+'</td>'+'<td>'+element.comuna+'</td>';
+                    html+="</tr>";
+                    });
+                $('#table_tecnicos').html(html);
+                $('#modal-xl').modal('show');
+                }
+		    });
+        }
+        function showTecnicosByArea(proyecto,area) {
+            html="";
+            fecha='{{str_replace("/","",str_replace("-","",$fecha))}}';
+            $('#table_tecnicos').html("");
+            $('#nombre_disponible').html("Area");
+    	    $.ajax({
+	        type: 'GET',
+	        url: "/users/ajax/getByArea/"+proyecto+"/"+fecha+"/"+area,
+	        dataType: 'json',
+            success: function (data) {
+                $.each(data, function(index, element) {
+                    html+="<tr>'";
+                    html+='<td>'+element.rut+'</td>'+'<td>'+element.name+'</td>';
+                    html+='<td>'+element.apaterno+" "+element.amaterno+'</td>'+'<td>'+(element?.area  ?? 'SIN AREA' )+'</td>';
                     html+="</tr>";
                     });
                 $('#table_tecnicos').html(html);
@@ -265,5 +399,5 @@
     })
 	</script>
   @endforeach
-
+  @endif
 @stop

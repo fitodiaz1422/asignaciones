@@ -58,6 +58,7 @@
                                     <tr>
                                         <th>Centro de Costo</th>
                                         <th>Depositado</th>
+                                        <th>Fecha</th>
                                         <th>Proyecto</th>
                                         <th>Actividad</th>
                                         <th>Nota</th>
@@ -70,6 +71,7 @@
                                         <tr>
                                             <td>{{$c->costo}}</td>
                                             <td>{{number_format($c->depositado)}}</td>
+                                            <td>{{$c->fdeposito}}</td>
                                             <td>{{($c->nombre) ??''}}</td>
                                             <td>{{$c->actividad}}</td>
                                             <td>{{$c->nota}}</td>
