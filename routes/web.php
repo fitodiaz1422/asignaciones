@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -48,9 +49,9 @@ Route::delete('/asignaciones', ['as'=>'asignaciones.destroy' ,'uses'=>'Asignacio
 Route::post('/asignaciones/hora', ['as'=>'asignaciones.hora' ,'uses'=>'AsignacionesController@Hora'])
 	->middleware('rol:asignaciones.edit');
 Route::post('/asignaciones/masiva', ['as'=>'asignacion.masiva' ,'uses'=>'AsignacionesController@Masiva'])
-	->middleware('rol:asignaciones.create');
+	->middleware('rol:asignaciones.create');	
 
-Route::get('/asignaciones_excel/{fecha}', ['as'=>'reportes.asignaciones', 'uses'=>'AsignacionesController@Reportes_asignaciones']);
+Route::get('/asignaciones_excel/{fecha}', ['as'=>'reportes.asignaciones', 'uses'=>'AsignacionesController@Reportes_asignaciones']);	
 
 
 Route::get('/asistencia/asistencia', ['as'=>'asistencia.index', 'uses'=>'AsistenciaController@Index'])
@@ -69,7 +70,7 @@ Route::get('/asistencia/bono', ['as'=>'bono.index', 'uses'=>'AsistenciaControlle
 Route::post('/asistencia/bono/store', ['as'=>'bono.store', 'uses'=>'AsistenciaController@BonoStore'])
 	->middleware('rol:bono.index');
 Route::post('/asistencia/bono/edit', ['as'=>'bono.edit', 'uses'=>'AsistenciaController@BonoEdit'])
-	->middleware('rol:bono.index');
+	->middleware('rol:bono.index');	
 
 
 
@@ -123,7 +124,6 @@ Route::put('/users/password/update/{id}', ['as'=>'users.updatepassword' ,'uses'=
     ->middleware('rol:users.edit');
 Route::get('/users/ajax/getDisponibles/{proyecto}/{region}/{fecha}', ['as'=>'users.get.disponibles' ,'uses'=>'UsersController@getDisponibles']);
 Route::get('/users/ajax/getByArea/{proyecto}/{fecha}/{area?}', ['as'=>'users.get.by_area' ,'uses'=>'UsersController@getByArea']);
-
 
 
 Route::get('/users/ajax/validaRut/{q}', ['as'=>'users.ajax.valida_rut' ,'uses'=>'UsersController@validaRut']);
@@ -201,7 +201,7 @@ Route::post('/maestros/herramienta/store', ['as'=>'maestros.herramienta.store', 
 Route::post('/maestros/costo/store', ['as'=>'maestros.costo.store', 'uses'=>'MaestrosController@storeCosto'])
     ->middleware('rol:maestros.index');
 Route::post('/maestros/motivo/store', ['as'=>'maestros.motivo.store', 'uses'=>'MaestrosController@storeMotivo'])
-    ->middleware('rol:maestros.index');
+    ->middleware('rol:maestros.index'); 	    
 
 
 Route::put('/maestros/empresa/update', ['as'=>'maestros.empresa.update', 'uses'=>'MaestrosController@updateEmpresa'])
@@ -239,13 +239,13 @@ Route::delete('/cotizaciones', ['as'=>'cotizaciones.destroy' ,'uses'=>'Cotizacio
 Route::get('/cotizaciones/ajax/{id}', ['as'=>'cotizaciones.ajax_show' ,'uses'=>'CotizacionesController@AjaxShow'])
 	->middleware('rol:cotizaciones.edit');
 
-Route::post('/importCotiPDF', ['as'=>'importCotiPDF' ,'uses'=>'CotizacionesController@importCotiPDF']);
+Route::post('/importCotiPDF', ['as'=>'importCotiPDF' ,'uses'=>'CotizacionesController@importCotiPDF']);	
 
 Route::post('/cotizacionesPO', ['as'=>'cotizaciones.subirPO' ,'uses'=>'CotizacionesController@subirPO'])
 	->middleware('rol:cotizaciones.edit');
 
 Route::post('/cotizacionesFactura', ['as'=>'cotizaciones.subirFactura' ,'uses'=>'CotizacionesController@subirFactura'])
-	->middleware('rol:cotizaciones.edit');
+	->middleware('rol:cotizaciones.edit');	
 
 
 Route::get('/clearcache', function () {
@@ -253,7 +253,7 @@ Route::get('/clearcache', function () {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
     Artisan::call('route:clear');
+    Artisan::call('config:cache');
     return "cache eliminada correctamente";
 });
-
 
