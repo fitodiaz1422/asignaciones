@@ -27,7 +27,7 @@ class Actividad extends Model
     }
 
     public function CentroCosto(){
-        return $this->belongsTo(Centro_Costo::class);
+        return $this->belongsTo(Centro_costo::class);
     }
 
 }
