@@ -1560,7 +1560,7 @@ function showModal_masiva() {
 	    		$('#actividadIniFin').val(data.actividad.id);
                 $('#actividadUploadCheck').val(data.actividad.id);
                 $('#actividadDeleteCheck').val(data.actividad.id);
-	        	$('#mdlCuerpo').html(data.actividad.descripcion.replace(/\n/g, "</br>")."<br>Centro Costo: "+data.actividad.centro_costo?.descripcion ?? '');
+	        	$('#mdlCuerpo').html(data.actividad.descripcion.replace(/\n/g, "</br>")+"<br>Centro Costo: "+(data.actividad.centro_costo?.descripcion ?? ''));
 	        	$('#modal2-xl').modal('show')
 	       },
 	        error: function (request, status, error) {
