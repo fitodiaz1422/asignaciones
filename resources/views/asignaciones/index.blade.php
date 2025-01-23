@@ -129,7 +129,7 @@
         				@if (auth()->user()->hasRoles('solo_lectura_asignacion_residente_pjud'))
         					@foreach($users->where('proyecto_id','<>',14) as $user)
         					@if($user->proyecto->id == 13)
-        
+
         							@php($username="")
         							@php($coordinador1="")
         							@php($coordinador2="")
@@ -139,10 +139,10 @@
         								@php($username =$username."/")
         								<td>{{($user->Comuna->Region->codigo) ?? ''}}</td>
         								<td>{{($user->Comuna->nombre) ?? ''}}</td>
-        								
+
         								<td>{{($user->Proyecto->nombre) ?? ''}}</td>
         								<td>{{($user->cargo->nombre) ?? ''}}</td>
-        
+
         								@php($horacount=7)
         								@php($arr=[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3])
         								@php($arr2=["","","","","","","","","","","","","",""])
@@ -166,10 +166,10 @@
         									@php($coordinador3=$coordinador2)
         									@php($coordinador1 = $coordinador1 . "/" . $coordinador2)
         									@endif
-        								
+
         								@endforeach
         								<td>{{$lugar_trabajo}}</td>
-        								
+
         								<td>{{$coordinador1}}</td>
         								<td>{{$username}} <button type="button" class="btn btn-default p-0" >
         												<i class="fas fa-book-reader" style="font-size: 24px;"></i>
@@ -202,7 +202,7 @@
         										<td style="display: none;"></td>
         										@php($cant++)
         									@endwhile
-        
+
         									@if(auth()->user()->hasRoles('asignaciones.create'))
         										<td  align="center"><button type="button" class="btn btn-default p-0" >
         											<i class="fas fa-edit" style="font-size: 24px;"></i>
@@ -211,7 +211,7 @@
         									@else
         										<td></td>
         									@endif
-        
+
         								@if($futuro)
         									<td  align="center">
         										@if(auth()->user()->hasRoles('asignaciones.create'))
@@ -234,7 +234,7 @@
         							</tr>
         							@endif
         								@if($user->proyecto->id == 12)
-        
+
         							@php($username="")
         							@php($coordinador1="")
         							@php($coordinador2="")
@@ -244,10 +244,10 @@
         								@php($username =$username."/")
         								<td>{{($user->Comuna->Region->codigo) ?? ''}}</td>
         								<td>{{($user->Comuna->nombre) ?? ''}}</td>
-        								
+
         								<td>{{($user->Proyecto->nombre) ?? ''}}</td>
         								<td>{{($user->cargo->nombre) ?? ''}}</td>
-        
+
         								@php($horacount=7)
         								@php($arr=[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3])
         								@php($arr2=["","","","","","","","","","","","","",""])
@@ -271,10 +271,10 @@
         									@php($coordinador3=$coordinador2)
         									@php($coordinador1 = $coordinador1 . "/" . $coordinador2)
         									@endif
-        								
+
         								@endforeach
         								<td>{{$lugar_trabajo}}</td>
-        								
+
         								<td>{{$coordinador1}}</td>
         								<td>{{$username}} <button type="button" class="btn btn-default p-0" >
         												<i class="fas fa-book-reader" style="font-size: 24px;"></i>
@@ -307,7 +307,7 @@
         										<td style="display: none;"></td>
         										@php($cant++)
         									@endwhile
-        
+
         									@if(auth()->user()->hasRoles('asignaciones.create'))
         										<td  align="center"><button type="button" class="btn btn-default p-0" >
         											<i class="fas fa-edit" style="font-size: 24px;"></i>
@@ -316,7 +316,7 @@
         									@else
         										<td></td>
         									@endif
-        
+
         								@if($futuro)
         									<td  align="center">
         										@if(auth()->user()->hasRoles('asignaciones.create'))
@@ -339,12 +339,12 @@
         							</tr>
         							@endif
         							@endforeach
-        					
-        
+
+
         				@else
         					@foreach($users->where('proyecto_id','<>',14) as $user)
-        					
-        
+
+
         					@php($username="")
         					 @php($coordinador1="")
         					 @php($coordinador2="")
@@ -354,10 +354,10 @@
         						@php($username =$username."/")
         						<td>{{($user->Comuna->Region->codigo) ?? ''}}</td>
         						<td>{{($user->Comuna->nombre) ?? ''}}</td>
-        						
+
         						<td>{{($user->Proyecto->nombre) ?? ''}}</td>
         						<td>{{($user->cargo->nombre) ?? ''}}</td>
-        
+
         			            @php($horacount=7)
         				        @php($arr=[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3])
         				        @php($arr2=["","","","","","","","","","","","","",""])
@@ -381,10 +381,10 @@
                                      @php($coordinador3=$coordinador2)
                                      @php($coordinador1 = $coordinador1 . "/" . $coordinador2)
                                     @endif
-                                   
+
         						@endforeach
         						<td>{{$lugar_trabajo}}</td>
-        						
+
         						<td>{{$coordinador1}}</td>
         						<td>{{$username}} <button type="button" class="btn btn-default p-0" onclick="showInfoTecnico('{{$user->id}}','{{$username}}','{{$user->fono}}','{{$user->rut}}','{{$user->emailPersonal}}','{{$user->direccion}}','{{$user->Comuna->nombre}}','{{$user->Comuna->Region->codigo}}')">
                                                 <i class="fas fa-book-reader" style="font-size: 24px;"></i>
@@ -417,7 +417,7 @@
         							 	<td style="display: none;"></td>
         								 @php($cant++)
         							 @endwhile
-        
+
                                     @if(auth()->user()->hasRoles('asignaciones.create'))
                                         <td  align="center"><button type="button" class="btn btn-default p-0" onclick="showModal('{{$user->id}}','{{$username}}',[{!! implode(",",$arr) !!}])">
                                             <i class="fas fa-edit" style="font-size: 24px;"></i>
@@ -426,7 +426,7 @@
                                     @else
                                         <td></td>
                                     @endif
-        
+
                                 @if($futuro)
                                     <td  align="center">
                                         @if(auth()->user()->hasRoles('asignaciones.create'))
@@ -448,7 +448,7 @@
                                 @endif
         					</tr>
         					@endforeach
-        					
+
         				@endif
         				</tbody>
         			</table>
@@ -484,8 +484,8 @@
         				</thead>
         				<tbody>
         				@foreach($users->where('proyecto_id',14)  as $user)
-        					
-        
+
+
         					@php($username="")
         					 @php($coordinador1="")
         					 @php($coordinador2="")
@@ -495,10 +495,10 @@
         						@php($username =$username."/")
         						<td>{{($user->Comuna->Region->codigo) ?? ''}}</td>
         						<td>{{($user->Comuna->nombre) ?? ''}}</td>
-        						
+
         						<td>{{($user->Proyecto->nombre) ?? ''}}</td>
         						<td>{{($user->cargo->nombre) ?? ''}}</td>
-        
+
         			            @php($horacount=7)
         				        @php($arr=[-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3])
         				        @php($arr2=["","","","","","","","","","","","","",""])
@@ -522,10 +522,10 @@
                                      @php($coordinador3=$coordinador2)
                                      @php($coordinador1 = $coordinador1 . "/" . $coordinador2)
                                     @endif
-                                   
+
         						@endforeach
         						<td>{{$lugar_trabajo}}</td>
-        						
+
         						<td>{{$coordinador1}}</td>
         						<td>{{$username}} <button type="button" class="btn btn-default p-0" onclick="showInfoTecnico('{{$user->id}}','{{$username}}','{{$user->fono}}','{{$user->rut}}','{{$user->emailPersonal}}','{{$user->direccion}}','{{$user->Comuna->nombre}}','{{$user->Comuna->Region->codigo}}')">
                                                 <i class="fas fa-book-reader" style="font-size: 24px;"></i>
@@ -558,7 +558,7 @@
         							 	<td style="display: none;"></td>
         								 @php($cant++)
         							 @endwhile
-        
+
                                     @if(auth()->user()->hasRoles('asignaciones.create'))
                                         <td  align="center"><button type="button" class="btn btn-default p-0" onclick="showModal('{{$user->id}}','{{$username}}',[{!! implode(",",$arr) !!}])">
                                             <i class="fas fa-edit" style="font-size: 24px;"></i>
@@ -567,7 +567,7 @@
                                     @else
                                         <td></td>
                                     @endif
-        
+
                                 @if($futuro)
                                     <td  align="center">
                                         @if(auth()->user()->hasRoles('asignaciones.create'))
@@ -589,9 +589,9 @@
                                 @endif
         					</tr>
         					@endforeach
-        					
+
         				</tbody>
-        			</table>        		    
+        			</table>
         		</div>
         	</div>
         </div>
@@ -616,12 +616,12 @@
 	            <div class="card-body">
 	            	<div class="row">
 	            		<div class="col-sm-6">
-						
+
 							 <div class="form-group" id="bodyReferenciasModal">
-		                        
+
 		                      </div>
-							 
-                              
+
+
 	            		</div>
 						<div class="col-sm-6">
 						<div id="motivo_id" ><label>Motivo</label>
@@ -636,20 +636,20 @@
 						<div id="solicitado_id" ><label>Solicitado Por</label>
 							<select class="form-control select2" id="solicitado_modificar" name="solicitado_modificar" required>
 								@foreach($solicitados as $solicitado)
-								
+
 									<option value="{{$solicitado->id}}">{{$solicitado->name . ' ' . $solicitado->apaterno . ' '. $solicitado->amaterno}}</option>
-							
+
 								@endforeach
 							</select>
 						</div>
-	
+
 						<div class="form-group">
 							<label for="exampleInputFile">Subir Respaldo</label>
 							<div class="input-group">
 							<div class="custom-file">
 								<input type="file" id="archivo_modificar" name="archivo_respaldo_modificar" accept="image/png, image/jpeg,.pdf">
 							</div>
-						
+
 							</div>
 						</div>
 					</div>
@@ -683,7 +683,7 @@
 	<div class="modal-dialog modal-xl">
 	  <div class="modal-content">
 	    <div class="modal-header">
-	      <h4 class="modal-title" id="title">Asignar Tarea: </h4> 
+	      <h4 class="modal-title" id="title">Asignar Tarea: </h4>
 	      <h4 class="modal-title"><span id="modal-user-name"></span></h4>
 	      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	        <span aria-hidden="true">×</span>
@@ -728,7 +728,7 @@
 			                    <input type="text" class="form-control" id="inputDetalle" name="detalle" required>
 			                  </div>
 	            		</div>
-	            		
+
 	            		<div class="col-sm-6">
 	            		    <div class="form-group">
 		                  <label>Centro de Costo</label>
@@ -774,7 +774,7 @@
                                 </div>
                                 <input type="text" class="form-control float-right" id="reservation" name="fecha_para_deposito" required>
                               </div>
-                              
+
 	            		</div>
 	            	</div>
 	        		<input type="hidden" class="form-control" name="fechadatos" value="{{$date}}">
@@ -817,7 +817,7 @@
 						@if (auth()->user()->hasRoles('solo_lectura_asignacion_residente_pjud'))
 
 	            				<div class="row" id="divIniFin">
-                                    
+
                                         <div class="col-sm-12">
                                             <form action="{{route('asignaciones.set_ajax_iniciafin')}}" method="POST" id="forminifin">
                                                 {{ csrf_field() }}
@@ -836,12 +836,12 @@
                                             </form>
                                         </div>
                                         <div class="col-sm-12 hidden" id="div-update"><br><br>
-                                            
+
                                         </div>
                                         <div class="col-sm-12" id="div-file"><br><br>
-                                            
+
                                         </div>
-                                   
+
 	            				</div>
 
 						@else
@@ -899,9 +899,9 @@
                                             </form>
                                         </div>
                                     @endif
-	            				</div>		
+	            				</div>
 
-						@endif		
+						@endif
 
 	            		</div>
 	            	</div>
@@ -972,7 +972,7 @@
 <!-- /.modal-info-tecnico -->
 <div class="modal fade" id="modal5-xl" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
-    
+
 	  <div class="modal-content">
 	    <div class="modal-header">
           <h4 class="modal-title">Informacion Tecnico: <span id="mdlNombreFalta"></span></h4>
@@ -981,7 +981,7 @@
           </button>
 
         </div>
-        
+
 
 	    	<div class="modal-body">
 	            <div class="card-body">
@@ -997,8 +997,8 @@
                     </br>
                     <label>Direccion: <span id="mdlDireccionInfo"></span></label>
                     </br>
-                    
-                       
+
+
                       </div>
 	            </div>
 	     </div>
@@ -1006,7 +1006,7 @@
 	      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 	    </div>
 	  </div>
-	
+
 	  <!-- /.modal-content -->
 	</div>
 	<!-- /.modal-dialog -->
@@ -1086,7 +1086,7 @@
 	                    	    <option value="{{$proyecto->id}}">{{$proyecto->nombre}}</option>
 	                        @endforeach
                         </select></div>
-                        
+
                   	</div>
 					<div class="form-group">
 
@@ -1102,10 +1102,10 @@
 	                    	    <option value="{{$proyecto->id}}">{{$proyecto->nombre}}</option>
 	                        @endforeach
                         </select>
-					
-					
+
+
 					</div>
-	                  
+
 	                </div>
 					<div class="input-group">
 	                    <div class="input-group-prepend">
@@ -1138,8 +1138,8 @@
 		                  </select>
 		                </div>
 						</div>
-					
-					
+
+
 	            		<div class="col-sm-6">
 		                  <div class="form-group">
 		                    <label for="inputUsuario">Usuario</label>
@@ -1173,7 +1173,7 @@
 							  </div>
 							  </div>
 	            		</div>
-	           
+
 
 
 	     </div>
@@ -1217,9 +1217,9 @@
 					<div id="solicitado_id" ><label>Solicitado Por</label>
                         <select class="form-control select2" id="solicitado" name="solicitado" required>
                             @foreach($solicitados as $solicitado)
-							
+
 	                    	    <option value="{{$solicitado->id}}">{{$solicitado->name . ' ' . $solicitado->apaterno . ' '. $solicitado->amaterno}}</option>
-						
+
 	                        @endforeach
                         </select>
 					</div>
@@ -1230,17 +1230,17 @@
 						<div class="custom-file">
 							<input type="file" id="archivo" name="archivo_respaldo" accept="image/png, image/jpeg,.pdf">
 						</div>
-					
+
 						</div>
 					</div>
-                    
+
 	            </div>
 	     </div>
 	    <div class="modal-footer justify-content-between">
 	      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 	      <button type="submit" class="btn btn-danger" >ELIMINAR</button>
 	    </div>
-	       
+
 	        <input type="hidden" name="delete_id" id="actividad_id_eliminar"/>
 	  </div>
 	</form>
@@ -1273,8 +1273,8 @@ function showModal_masiva() {
 	}
 
 	function showModal(user_id,user_name,arr) {
-	    
-	    
+
+
 	    $('#modal-user-name').html(user_name);
 	    $('#modal-user-id').val(user_id);
 	    $('#modal-user-id2').val(user_id);
@@ -1328,7 +1328,7 @@ function showModal_masiva() {
     }
 
 }
-		
+
 	}
 
 	function modificarModal() {
@@ -1345,9 +1345,9 @@ function showModal_masiva() {
 	        success: function (data) {
 				html = '<label>Seleccione Horas a Eliminar</label> '
 		                +  '<select multiple="" class="form-control" id="inputHoras" name="horas[]" required> ';
-                                 
-		                        
-			
+
+
+
 
 
 				data.actividad.forEach(function(act, index2){
@@ -1356,7 +1356,7 @@ function showModal_masiva() {
 
 					$.each(act, function(index, value) {
 
-					
+
 
 						if(index == 'id'){
 							//console.log(index + ":" +value);
@@ -1417,19 +1417,19 @@ function showModal_masiva() {
 								html=html+`<option id="hora19" value="${h}">Desde las 19:00 Hasta las 20:00</option>`;
 
 							}
-							
+
 						}
 
-					
-					
+
+
 				});
 
 				});
 
 				html = html + '</select>';
 
-				
-   
+
+
 
 
 
@@ -1441,9 +1441,9 @@ function showModal_masiva() {
 	        	clear();
 	        }
 		})
-		
-	 
-	    
+
+
+
 	}
 
 	function showFalta(user_id,user_name) {
@@ -1458,8 +1458,8 @@ function showModal_masiva() {
 	    $('#modal-atraso-user-id').val(user_id);
 	    $('#modal4-xl').modal('show')
 	}
-	
-	
+
+
 		function showInfoTecnico(user_id,user_name,user_fono,user_rut,user_email,user_direccion,user_comuna,user_region) {
 	    $('#mdlRutInfo').html(user_rut);
 	    $('#mdlNombreInfo').html(user_name);
@@ -1497,16 +1497,16 @@ function showModal_masiva() {
 	        dataType: 'json',
 	        data: data,
 	        success: function (data) {
-	            
-	        
-	            
+
+
+
 	            let date = new Date(Date.parse(data.actividad.created_at));
 	            let year = date.getFullYear();
 	            let dia = date.getDate();
 	            let mes = date.getMonth();
-	            
+
 	            let mes_f = mes + 1;
-	            
+
 	            if(mes_f < 10)
 	            {
 	                mes_f = "0"+mes_f;
@@ -1515,11 +1515,11 @@ function showModal_masiva() {
 	            {
 	                dia = "0"+dia;
 	            }
-	            
-	            
+
+
 	            let hora = date.getHours();
 	            let minutos = date.getMinutes();
-	            
+
 	            if(hora < 10)
 	            {
 	                hora = "0"+hora;
@@ -1560,7 +1560,7 @@ function showModal_masiva() {
 	    		$('#actividadIniFin').val(data.actividad.id);
                 $('#actividadUploadCheck').val(data.actividad.id);
                 $('#actividadDeleteCheck').val(data.actividad.id);
-	        	$('#mdlCuerpo').html(data.actividad.descripcion.replace(/\n/g, "</br>"));
+	        	$('#mdlCuerpo').html(data.actividad.descripcion.replace(/\n/g, "</br>")."<br>Centro Costo: "+data.actividad.centro_costo?.descripcion ?? '');
 	        	$('#modal2-xl').modal('show')
 	       },
 	        error: function (request, status, error) {

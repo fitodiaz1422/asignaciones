@@ -34,21 +34,21 @@ class AsignacionesController extends Controller
     }
 
     public function index(Request $request){
-       
-    
+
+
     	$filter_region_id= ($request->filter_region_id) ? $request->filter_region_id : null;
     	$filter_proyecto_id= ($request->filter_proyecto_id) ? $request->filter_proyecto_id : null;
     	$filter_sin_asignar = (isset($request->filter_sin_asignar)) ? $request->filter_sin_asignar : -1;
-    	
+
     	$date=$request->fechaasign ? $request->fechaasign : date('Y-m-d');
-    	
+
         if(auth()->user()->hasRoles('permisos.coordinador'))
             $users=User::where('proyecto_id',auth()->user()->proyecto_id)->where('estado_contrato',1)->where('usuario_cliente',null);
         elseif(auth()->user()->hasRoles('permisos.tecnico'))
             $users=User::where('id',auth()->user()->id)->where('estado_contrato',1)->where('usuario_cliente',null)->where('proyecto_id','<>',24);
         else
             $users=User::where('estado_contrato',1)->where('usuario_cliente',null)->where('proyecto_id','<>',24);
-            
+
              if($filter_sin_asignar === "1"){
                 $users=$users->whereDoesntHave('horas', function ($query) use ($date){
                     $query->where('fecha',str_replace("-", "", $date));
@@ -61,31 +61,31 @@ class AsignacionesController extends Controller
             }else{
                 $users=$users;
             }
-            
-            
+
+
         if(!auth()->user()->hasRoles('permisos.coordinador') && $filter_proyecto_id)
             $users=  $users->where('proyecto_id',$filter_proyecto_id);
-        $users= ($filter_region_id) 
+        $users= ($filter_region_id)
             ? $users->whereHas('comuna',function ($query) use ($filter_region_id){
                                 $query->where('region_id',$filter_region_id);
             })->get()
-                                
+
             : $users->get();
-            
+
 
     	$comunas=Comuna::query()->orderby('nombre','asc')->with('Region')->get();
-    	
+
     	$costo = DB::table('centro_costos')->where('estado','=','ACTIVO')->get();
-    	
+
 		$motivos = Motivos::where('estado','ACTIVO')->get();
 
 		$solicitados = User::where('estado_contrato',1)->where('usuario_cliente',null)->whereIn('cargo_id',[1,3,4])->get();
-    
+
     	$regiones = Region::all();
     	//$proyectos=Proyecto::all();
     	$proyectos=Proyecto::where('estado','ACTIVO')->get();
 
-    	
+
 
         $mod=true;
         $futuro=true;
@@ -154,12 +154,12 @@ class AsignacionesController extends Controller
     }
 
     public function getAjaxActividad(Request $request){
-	
-	
-	
-		$actividad=Actividad::find($request->id);
-		
-		
+
+
+
+		$actividad=Actividad::with('CentroCosto')->find($request->id);
+
+
     	if(!$actividad){
             return response()->json(['status' => 'error','msg' =>  "No se Encontro la Actividad"], 400 );
 		}
@@ -167,17 +167,17 @@ class AsignacionesController extends Controller
     }
 
 	public function getAjaxModificarActividad(Request $request){
-	
+
 		$actividad=User_Actividad::where('actividad_id',$request->id)->orderBy('id')->get();
-	
-		
-		
-		
+
+
+
+
     	if(!$actividad){
             return response()->json(['status' => 'error','msg' =>  "No se Encontro la Actividad"], 400 );
 		}
 		return response()->json(['status' => 'OK','actividad' =>  $actividad]);
-      
+
     }
 
 
@@ -359,14 +359,14 @@ class AsignacionesController extends Controller
 			$path=$file->storeAs('public/archivos',$name);
 			$actividad->respaldo_eliminacion='storage/archivos/'.$name;
 			}
-			
+
 
 			$actividad->save();
 
 
 
-			
-			//$actividad_detalle = 
+
+			//$actividad_detalle =
 
 		//	dd($actividad);
 
@@ -457,17 +457,17 @@ class AsignacionesController extends Controller
 			$path=$file->storeAs('public/archivos',$name);
 			$actividad_m->respaldo_modificacion='storage/archivos/'.$name;
 			}
-			
+
 			$actividad_m->save();
-			
+
 	    	foreach ($request->horas as $hora) {
 		    	$user= User_Actividad::findOrFail($hora);;
 		    	$user->delete();
 			}
 
-			
-		//	DB::commit();	
-    	
+
+		//	DB::commit();
+
     	return redirect()->route('asignaciones.index')->with(['info'=>"Se Modifico la Tarea",'color'=>"bg-green"]);
     }
 
@@ -483,14 +483,14 @@ class AsignacionesController extends Controller
 
 		if($s == "Proyectos")
 		{
-		
+
            $proyecto = \App\Proyecto::where('id',$request->proyecto_masivo)->firstorfail();
 		   DB::beginTransaction();
 
 		   try {
-			$fechas=explode(" - ", $request->fechadatos);   
+			$fechas=explode(" - ", $request->fechadatos);
 			$start_date = Carbon::createFromFormat('m/d/Y', $fechas[0]);
-            $end_date = Carbon::createFromFormat('m/d/Y', $fechas[1]); 
+            $end_date = Carbon::createFromFormat('m/d/Y', $fechas[1]);
 			$period = new \Carbon\CarbonPeriod($start_date, '1 day', $end_date);
 
 			//$proyecto=Proyecto::find($request->proyecto_id);
@@ -523,17 +523,17 @@ class AsignacionesController extends Controller
 					$actividad->proyecto_id=$request->proyecto_masivo;
 					$actividad->comuna_id=$request->comuna_id;
 			$actividad->descripcion=$datos;
-					
+
 					$actividad->user_id=$us->id;
 					$actividad->coordinacion=auth()->user()->id;
 					$actividad->coordinacion_name=auth()->user()->name ." ". auth()->user()->apaterno;
 					$actividad->centro_costo_id=0;
 				    $actividad->save();
-				   
+
 					//dd("estoy");
 				//	$horas=[7,8,9,10,11,12,13,14,15,16,17,18,19];
 					$horas = $request->horas;
-				   
+
 				//	dd($horas);
 						foreach ($horas as $hora) {
 							$relacion=new \App\User_Actividad;
@@ -543,17 +543,17 @@ class AsignacionesController extends Controller
 							$relacion->hora=$hora;
 						    $relacion->save();
 						}
-						DB::commit();		
+						DB::commit();
 
 				}
-			
-					
+
+
 					} // fin del if del dia actual
-					
+
 
 				} // fin del foreach de periodo
 
-			
+
     	} catch (\Exception $e) {
     		DB::rollback();
     		return redirect()->route('asignaciones.index')->with(['info'=>$e->getMessage(),'color'=>"bg-red"]);
@@ -569,9 +569,9 @@ class AsignacionesController extends Controller
 		   DB::beginTransaction();
 
 		   try {
-			$fechas=explode(" - ", $request->fechadatos);   
+			$fechas=explode(" - ", $request->fechadatos);
 			$start_date = Carbon::createFromFormat('m/d/Y', $fechas[0]);
-            $end_date = Carbon::createFromFormat('m/d/Y', $fechas[1]); 
+            $end_date = Carbon::createFromFormat('m/d/Y', $fechas[1]);
 			$period = new \Carbon\CarbonPeriod($start_date, '1 day', $end_date);
 
 			$proyecto=Proyecto::find($request->proyecto_id);
@@ -595,24 +595,24 @@ class AsignacionesController extends Controller
 				if($dia_actual > 0 && $dia_actual < 6)
 				{
 
-				
+
 					$actividad=new \App\Actividad;
 					$actividad->nombre=$request->actividad;
 					$actividad->tipo_asistencia_id=0;
 					$actividad->proyecto_id=$request->proyecto_id;
 					$actividad->comuna_id=$request->comuna_id;
 			$actividad->descripcion=$datos;
-					
+
 					$actividad->user_id=$usuario->id;
 					$actividad->coordinacion=auth()->user()->id;
 					$actividad->coordinacion_name=auth()->user()->name ." ". auth()->user()->apaterno;
 					$actividad->centro_costo_id=0;
 				    $actividad->save();
-				   
-					
+
+
 				//	$horas=[7,8,9,10,11,12,13,14,15,16,17,18,19];
-					
-				   
+
+
 						foreach ($request->horas as $hora) {
 							$relacion=new \App\User_Actividad;
 							$relacion->user_id=$usuario->id;
@@ -622,15 +622,15 @@ class AsignacionesController extends Controller
 						    $relacion->save();
 						}
 
-				
-			
-					
+
+
+
 					} // fin del if del dia actual
 					DB::commit();
 
 				} // fin del foreach de periodo
 
-			
+
     	} catch (\Exception $e) {
     		DB::rollback();
     		return redirect()->route('asignaciones.index')->with(['info'=>$e->getMessage(),'color'=>"bg-red"]);
@@ -638,7 +638,7 @@ class AsignacionesController extends Controller
 
 		return redirect()->route('asignaciones.index')->with(['info'=>"Se Guardaron las Asignaciones Masiva",'color'=>"bg-green"]);
 		}
-		
+
 	} // fin al foreach de seleccion masiva
 
 
@@ -659,5 +659,5 @@ else{
 
 	}
 
-	
+
 }

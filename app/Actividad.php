@@ -26,4 +26,8 @@ class Actividad extends Model
         return $this->belongsTo(TipoAsistencia::class,'tipo_asistencia_id','tipo');
     }
 
+    public function CentroCosto(){
+        return $this->belongsTo(Centro_Costo::class);
+    }
+
 }
