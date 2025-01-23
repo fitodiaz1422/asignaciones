@@ -28,6 +28,17 @@ services:
       - app
     networks:
       - asignaciones_network
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_app
+    environment:
+      - PMA_HOST=host.docker.internal
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8020:80"
+
 networks:
   asignaciones_network:
     driver: bridge
