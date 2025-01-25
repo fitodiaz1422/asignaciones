@@ -36,7 +36,7 @@
       <p class="login-box-msg">{{ __('Sign in to start your session') }}</p>
 
         <form method="POST" action="{{ route('login') }}">
-            @csrf
+            {{ csrf_field() }}
 
             <div class="form-group row">
                 <div class="input-group mb-3">
@@ -87,11 +87,11 @@
             <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
 
-                    @if (Route::has('password.request'))
+                    {{-- @if (Route::has('password.request'))
                         <a class="btn btn-link" href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
                         </a>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
       </form>
