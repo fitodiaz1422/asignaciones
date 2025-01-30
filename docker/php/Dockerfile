@@ -18,9 +18,11 @@ RUN apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
-RUN sed -i 's/post_max_size = 8M/post_max_size = 200M/' /usr/local/etc/php/php.ini
-RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 200M/' /usr/local/etc/php/php.ini
-RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/' /usr/local/etc/php/php.ini
+RUN sed -i 's/post_max_size = 8M/post_max_size = 800M/' /usr/local/etc/php/php.ini
+RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 800M/' /usr/local/etc/php/php.ini
+RUN sed -i 's/memory_limit = 128M/memory_limit = 8192M/' /usr/local/etc/php/php.ini
+RUN sed -i 's/max_execution_time = 30/max_execution_time = 3000/' /usr/local/etc/php/php.ini
+RUN sed -i 's/max_input_time = 60/max_input_time = 6000/' /usr/local/etc/php/php.ini
 
 COPY . /var/www/html
 
