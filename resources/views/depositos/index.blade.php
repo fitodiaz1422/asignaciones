@@ -255,6 +255,8 @@
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{asset('plugins/jszip/jszip.min.js') }}"></script>
 <script type="text/javascript">
@@ -320,7 +322,7 @@ $(document).ready(function() {
         ordering:true,
 		buttons: [
 		{
-			extend: 'excel',
+			extend: 'excelHtml5',
 			title: 'Depositos',
 		}],
         order:[[4,'asc'],[5,'desc']]
