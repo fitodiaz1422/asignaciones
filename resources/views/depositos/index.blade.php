@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+
 @stop
 
 
@@ -253,6 +255,8 @@
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{asset('plugins/jszip/jszip.min.js') }}"></script>
 <script type="text/javascript">
 
 	function getDeposito(act_id) {
@@ -310,9 +314,15 @@ $(document).ready(function() {
   bsCustomFileInput.init();
   $(function () {
     $('#dateTable1').DataTable({
+		dom: 'Blfrtip',
 		pageLength: 25,
         responsive: true,
         ordering:true,
+		buttons: [
+		{
+			extend: 'excel',
+			title: 'Depositos',
+		}],
         order:[[4,'asc'],[5,'desc']]
     });
   });
