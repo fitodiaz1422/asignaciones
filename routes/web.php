@@ -257,3 +257,7 @@ Route::get('/clearcache', function () {
     return "cache eliminada correctamente";
 });
 
+Route::get('/php_info', function () {
+	phpinfo();
+});
+
