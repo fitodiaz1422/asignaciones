@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Excel;
-
+set_time_limit(3000);
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use phpDocumentor\Reflection\Types\Integer;
 use Illuminate\Support\Facades\DB;
@@ -31,8 +31,8 @@ class AsistenciaExcel{
 
     private function query(){
         $total=DB::table('users_actividades')->selectRaw('users.id,actividades.tipo_asistencia_id,right(users_actividades.fecha,2) as dia')
-        ->leftJoin('users','users.id','=','users_actividades.user_id')
-        ->rightjoin('actividades','actividades.id', '=', 'users_actividades.actividad_id')
+        ->join('users','users.id','=','users_actividades.user_id')
+        ->join('actividades','actividades.id', '=', 'users_actividades.actividad_id')
         ->whereRaw('left(users_actividades.fecha,6) = '.$this->fecha)
         ->groupby('users_actividades.user_id','users_actividades.fecha','users.id','actividades.tipo_asistencia_id')
         ->orderby('fecha','asc')
@@ -102,8 +102,8 @@ class AsistenciaExcel{
                     WriterEntityFactory::createCell($user->name),
                     WriterEntityFactory::createCell($user->apaterno. " " . $user->amaterno),
                     WriterEntityFactory::createCell($user->funcion),
-                    WriterEntityFactory::createCell($user->py),
-                    WriterEntityFactory::createCell($user->rg),
+                    WriterEntityFactory::createCell($user->proyecto->nombre ?? ''),
+                    WriterEntityFactory::createCell($user->region->comuna->nombre ?? ''),
                     WriterEntityFactory::createCell(($atraso->atraso)??0),
                     WriterEntityFactory::createCell(0+(($anticipo->monto)??0)),
                 ];
@@ -127,7 +127,6 @@ class AsistenciaExcel{
                 //$cells =array_merge($cells ,$this->tmp_tipos->toArray());
                 $row = WriterEntityFactory::createRow($cells);
                 $this->writer->addRow($row);
-                unset($row_data);
             }
     }
 
@@ -141,10 +140,8 @@ class AsistenciaExcel{
     }
 
     private function getUsers(){
-        return \App\User::select('users.*','proyectos.nombre as py','regiones.nombre as rg')
-        ->join('proyectos','users.proyecto_id','proyectos.id')
-        ->join('comunas','users.comuna_id','comunas.id')
-        ->join('regiones','comunas.region_id','regiones.id')
+        return \App\User::select('rut','name','apaterno','amaterno','id','proyecto_id','comuna_id','funcion')
+        ->with(['proyecto:id,nombre','comuna.region'])
         ->get();
     }
 

@@ -24,7 +24,7 @@ class ReportesController extends Controller
     public function asistenciaPost(Request $request){
         $fecha=str_replace("-","",$request->fecha);
         $asistencia=new AsistenciaExcel($fecha);
-        $asistencia->download();
+        return $asistencia->download();
     }
 
     public function atraso(){
@@ -75,16 +75,16 @@ class ReportesController extends Controller
         $proyecto_tecnicos=new ProyectoTecnicosExcel($fecha,$proyecto);
         $proyecto_tecnicos->download();
     }
-    
+
      public function control_coordinacion(){
         return view('reportes.control_coordinacion');
     }
 
     public function control_coordinacionPost(Request $request){
-        
+
         $fechaIni = date("Ymd",strtotime($request->fechaini));
         $fechaFin = date("Ymd",strtotime($request->fechafin));
-        
+
       /*  $actividades=\App\Actividad::selectRaw('DISTINCT(actividades.id), actividades.fecha_ini, actividades.fecha_fin, actividades.nombre,actividades.coordinacion, actividades.coordinacion_name')
         ->Join('users_actividades','users_actividades.actividad_id','=','actividades.id')
         ->whereBetween('users_actividades.fecha', [$fechaIni, $fechaFin])
@@ -94,31 +94,31 @@ class ReportesController extends Controller
         ->whereBetween('users_actividades.fecha', [$fechaIni, $fechaFin])
         ->groupBy('actividades.coordinacion','actividades.coordinacion_name')
         ->get();
-        
+
       /*  $ini=\App\Actividad::selectRaw('count(actividades.fecha_ini) as ini,actividades.coordinacion, actividades.coordinacion_name')
         ->Join('users_actividades','users_actividades.actividad_id','=','actividades.id')
         ->whereBetween('users_actividades.fecha', [$fechaIni, $fechaFin])
         ->groupBy('actividades.coordinacion','actividades.coordinacion_name')
         ->get();*/
-        
+
         $ini=DB::select(DB::raw('SELECT count(a.fecha_ini) as ini,a.coordinacion, a.coordinacion_name FROM actividades  as a
 JOIN (SELECT DISTINCT(users_actividades.actividad_id) as id FROM users_actividades WHERE users_actividades.fecha BETWEEN "'.$fechaIni.'" and "'.$fechaFin.'") x  ON x.id = a.id
 group BY a.coordinacion, a.coordinacion_name'));
-        
+
      /*   $fin=\App\Actividad::selectRaw('count(actividades.fecha_fin) as fin,actividades.coordinacion, actividades.coordinacion_name')
         ->Join('users_actividades','users_actividades.actividad_id','=','actividades.id')
         ->whereBetween('users_actividades.fecha', [$fechaIni, $fechaFin])
         ->groupBy('actividades.coordinacion','actividades.coordinacion_name')
         ->get();*/
-        
+
          $fin=DB::select(DB::raw('SELECT count(a.fecha_fin) as fin,a.coordinacion, a.coordinacion_name FROM actividades  as a
 JOIN (SELECT DISTINCT(users_actividades.actividad_id) as id FROM users_actividades WHERE users_actividades.fecha BETWEEN "'.$fechaIni.'" and "'.$fechaFin.'") x  ON x.id = a.id
 group BY a.coordinacion, a.coordinacion_name'));
-        
+
         $actividades = json_decode(json_encode($actividades), FALSE);
         $ini = json_decode(json_encode($ini), FALSE);
         $fin = json_decode(json_encode($fin), FALSE);
-        
+
    /*     $grouped = $actividades->mapToGroups(function ($item, $key) {
     return [$item['coordinacion'] => $item['id']];
 });*/
@@ -129,33 +129,33 @@ group BY a.coordinacion, a.coordinacion_name'));
      //  $grouped = $actividades->groupBy('coordinacion');
      $collection = array();
         foreach($actividades as $a){
-            
+
             $aini = 0;
             $afin = 0;
-            
+
           foreach($ini as $i)
           {
-              
+
             //  dd($i);
               if ($a->coordinacion == $i->coordinacion)
               {
                   $aini = $i->ini;
-                  
+
               }
           }
            foreach($fin as $f)
           {
-              
+
             //  dd($i);
               if ($a->coordinacion == $f->coordinacion)
               {
                   $afin = $f->fin;
-                  
+
               }
           }
-          
-          
-            
+
+
+
              if($aini == 0)
              {
                   if($afin == 0)
@@ -166,7 +166,7 @@ group BY a.coordinacion, a.coordinacion_name'));
             'actividades' => $a->cantidad,
             'ini' => "0",
             'fin' => "0",
-        ]); 
+        ]);
              }
              else{
                   array_push($collection, [
@@ -175,20 +175,20 @@ group BY a.coordinacion, a.coordinacion_name'));
             'actividades' => $a->cantidad,
             'ini' => "0",
             'fin' => $afin,
-        ]); 
+        ]);
              }
-                
-                     
-                 
+
+
+
                    }
-                     
-                   
-                   
-               
-              
-             
+
+
+
+
+
+
              else{
-                 
+
                  if($afin == 0)
              {
                  array_push($collection, [
@@ -198,10 +198,10 @@ group BY a.coordinacion, a.coordinacion_name'));
             'ini' => $aini,
             'fin' => "0",
              ]);
-             
-                 
+
+
              }
-             
+
              else{
                  array_push($collection, [
             'coordinacion' => $a->coordinacion,
@@ -210,19 +210,19 @@ group BY a.coordinacion, a.coordinacion_name'));
             'ini' => $aini,
             'fin' => $afin,
              ]);
-                 
+
              }
-                       
-                  
-                   
-                  
-                     
-                   
-                   
+
+
+
+
+
+
+
                }
                  //dd("chao");
-               
-             
+
+
         }
         //dd($collection);
         $collection = json_decode(json_encode($collection), FALSE);
@@ -235,7 +235,7 @@ group BY a.coordinacion, a.coordinacion_name'));
         ->get();*/
         return view('reportes.control_coordinacion',compact('collection'), [$request->flash()]);
     }
-    
+
      public function centro_costo(){
         return view('reportes.centro_costo');
     }
@@ -252,5 +252,5 @@ group BY a.coordinacion, a.coordinacion_name'));
         ->get();
         return view('reportes.centro_costo',compact('centro'), [$request->flash()]);
     }
-    
+
 }
