@@ -29,7 +29,7 @@ class AsistenciaExcel{
         $this->findeMes = $findeMes->modify('last day of this month')->format('d');
 
         // Cargamos los tipos de asistencia y los preparamos en una estructura optimizada
-        $this->tipos = Cache::remember('tipos_asistencia_'.$this->fecha, 60, function() {
+        $this->tipos = Cache::remember('tipos_asistencia_'.$this->fecha, 1, function() {
             return \App\TipoAsistencia::where('estado', '=', 'ACTIVO')->get();
         });
 
@@ -41,7 +41,6 @@ class AsistenciaExcel{
 
     private function query(){
         // Implementamos caché para evitar consultas repetidas
-        return Cache::remember('asistencias_' . $this->fecha, 60, function() {
             $total = DB::table('users_actividades')
                 ->selectRaw('users.id, actividades.tipo_asistencia_id, right(users_actividades.fecha,2) as dia')
                 ->join('users', 'users.id', '=', 'users_actividades.user_id')
@@ -62,7 +61,6 @@ class AsistenciaExcel{
             $this->dataCache = $indexed;
 
             return $total;
-        });
     }
 
     private function setHeadersTipos(){
@@ -126,7 +124,6 @@ class AsistenciaExcel{
     }
 
     private function getAtrasos(){
-        return Cache::remember('atrasos_' . $this->fecha, 60, function() {
             $atrasos = \App\Atraso::selectRaw('user_id, sum(diferencia) as atraso')
                 ->where(DB::raw('left(fecha,6)'), '=', $this->fecha)
                 ->groupBy('user_id')
@@ -138,11 +135,10 @@ class AsistenciaExcel{
                 $indexed[$atraso->user_id] = $atraso;
             }
             return collect($indexed);
-        });
+
     }
 
     private function getAnticipos(){
-        return Cache::remember('anticipos_' . $this->fecha, 60, function() {
             $anticipos = \App\Anticipo::selectRaw('user_id, sum(monto) as monto')
                 ->whereYear('created_at', '=', substr($this->fecha, 0, 4))
                 ->whereMonth('created_at', '=', substr($this->fecha, 4, 2))
@@ -155,7 +151,6 @@ class AsistenciaExcel{
                 $indexed[$anticipo->user_id] = $anticipo;
             }
             return collect($indexed);
-        });
     }
 
     private function setBody($data){
@@ -250,7 +245,6 @@ class AsistenciaExcel{
     }
 
     private function getUsers(){
-        return Cache::remember('users_' . $this->fecha, 60, function() {
             $users = \App\User::select('rut','name','apaterno','amaterno','id','proyecto_id','comuna_id','funcion')
                 ->with(['proyecto:id,nombre','comuna.region'])
                 ->get();
@@ -261,7 +255,7 @@ class AsistenciaExcel{
             }
 
             return $users;
-        });
+
     }
 
 }

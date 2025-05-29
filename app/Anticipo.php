@@ -9,8 +9,6 @@ class Anticipo extends Model
 {
     use SoftDeletes;
 
-    public $timestamps = false;
-
     protected $fillable = [
         'deposito_id',
         'monto',

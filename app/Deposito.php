@@ -10,8 +10,6 @@ class Deposito extends Model
 {
     use SoftDeletes;
 
-    public $timestamps = false;
-
     public function getFechaParaDepositoAttribute($value){
         return Carbon::parse($value)->format('d/m/Y H:i');
     }

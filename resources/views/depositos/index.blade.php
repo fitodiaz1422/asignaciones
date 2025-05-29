@@ -84,7 +84,7 @@
                             <td>{{$username}}</td>
                             <td>{{$deposito->fecha_para_deposito}}</td>
                             <td align="center" >{{$deposito->deposito_solicitado}}</td>
-                            <td>{{ $deposito->anticipo->monto ?? 0 }}</td>
+                            <td>{{ $deposito->usuario->anticipos->sum('monto') ?? 0 }}</td>
 						</tr>
 						@endforeach
 					</tbody>
