@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Deposito extends Model
 {
+    use SoftDeletes;
+
     public $timestamps = false;
 
     public function getFechaParaDepositoAttribute($value){
@@ -31,6 +34,10 @@ class Deposito extends Model
 
      public function Comprobante(){
       return $this->Archivo()->where('tipo','DEPOSITO')->get();
+    }
+
+    public function anticipo(){
+      return $this->hasOne(Anticipo::class,'deposito_id','id');
     }
 
 

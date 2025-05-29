@@ -82,7 +82,7 @@ Route::post('/depositos', ['as'=>'depositos.store' ,'uses'=>'DepositosController
 	->middleware('rol:depositos.create');
 Route::put('/depositos/{id}', ['as'=>'depositos.update' ,'uses'=>'DepositosController@Update'])
 	->middleware('rol:depositos.edit');
-Route::delete('/depositos/{id}', ['as'=>'depositos.destroy' ,'uses'=>'DepositosController@Destroy'])
+Route::delete('/depositos', ['as'=>'depositos.destroy' ,'uses'=>'DepositosController@Destroy'])
 	->middleware('rol:depositos.destroy');
 
 Route::get('/rendiciones', ['as'=>'rendiciones.index', 'uses'=>'RendicionesController@Index'])

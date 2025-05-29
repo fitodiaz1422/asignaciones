@@ -43,7 +43,7 @@
 			<li class="nav-item">
 				<a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#tab_2" role="tab">Finalizadas</a>
 			</li>
-			
+
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane active" id="tab_1">
@@ -69,6 +69,7 @@
                             <th data-priority="1">Nombre</th>
                             <th data-priority="2">Fecha para Deposito</th>
                             <th data-priority="3" >Monto</th>
+                            <th>Anticipo</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -83,6 +84,7 @@
                             <td>{{$username}}</td>
                             <td>{{$deposito->fecha_para_deposito}}</td>
                             <td align="center" >{{$deposito->deposito_solicitado}}</td>
+                            <td>{{ $deposito->anticipo->monto ?? 0 }}</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -100,13 +102,17 @@
 								<th>Ciudad de Trabajo</th>
 								<th data-priority="1">Nombre</th>
 								<th data-priority="2">Fecha para Deposito</th>
-								<th data-priority="3" >Monto</th>
+                                <th data-priority="3" >Solicitado</th>
+                                <th data-priority="3" >Depositado</th>
+                                <th>Tipo</th>
+                                <th></th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($depositados as $deposito)
-	
+
 							@php($username=(($deposito->usuario->name)?? 'Usuario')." ".(($deposito->usuario->apaterno)?? 'Eliminado')." ".(($deposito->usuario->amaterno)??''))
+                            @php($tipo_deposito = $deposito->anticipo ? 'Anticipo' : 'Deposito')
 							<tr ondblclick="getDepositado('{{$deposito->actividad_id}}')" >
 								<td>{{$deposito->coordinacion_name}}</td>
 								<td>{{($deposito->usuario->Comuna->nombre)??''}}</td>
@@ -115,12 +121,17 @@
 								<td>{{$username}}</td>
 								<td>{{$deposito->fecha_para_deposito}}</td>
 								<td align="center" >{{$deposito->deposito_solicitado}}</td>
+								<td align="center" >{{$deposito->deposito_depositado}}</td>
+                                <td> <span class="badge {{$tipo_deposito == 'Anticipo' ? 'bg-danger' : 'bg-success'}}">{{$tipo_deposito}}</span></td>
+                                <td>
+                                    <button type="button" onclick="eliminar({{$deposito->id}})" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash"></i></button>
+                                </td>
 							</tr>
 							@endforeach
 						</tbody>
 					</table>
-				
-			</div>	
+
+			</div>
 
 		</div><!-- /.final de tabcontent -->
 
@@ -191,8 +202,8 @@
 
     </section>
  <!-- Modals Proyecto-->
- <div class="modal fade" id="modal_deposito_finalizado" >
-    <div class="modal-dialog modal-xl">
+    <div class="modal fade" id="modal_deposito_finalizado" >
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Tarea: <span id="mdlNombre_depositado"></span></h4>
@@ -207,9 +218,9 @@
 										<span id="mdlCuerpo_depositado"></span>
 								  </div>
 								  <div class="col-sm-6">
-	  
+
 										  <div class="row">
-	  
+
 											  <div class="col-sm-6">
 												  <p>Monto Depositado</p>
 												  <input type="number" min="1" class="form-control"  name="monto" id="monto_depositado"/>
@@ -227,22 +238,67 @@
 											  </div>
 											  <input type="hidden" name="actividad_id" id="actividadIniFin"/>
 											  <div class="col-sm-12">
-												
+
 											  </div>
 										  </div>
-	  
+
 								  </div>
 							  </div>
-	  
+
 						  </div>
 				   </div>
 					  <div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 					  </div>
             </div>
+        </div>
     </div>
-  </div>
 
+<!-- modal Eliminacion-->
+<div class="modal fade" id="modal4-eliminacion" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+        <form action="{{route('depositos.destroy')}}" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            @method('delete')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Motivo de Eliminacion: <span id="mdlNombreAtraso"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div id="motivo_id" ><label>Motivo</label>
+                            <select class="form-control select2" id="motivo" name="motivo" required>
+                                @foreach($motivos as $motivo)
+                                    @if($motivo->tipo == "ELIMINAR")
+                                        <option value="{{$motivo->id}}">{{$motivo->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputFile">Subir Respaldo</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" required id="archivo" name="archivo_respaldo" accept="image/png, image/jpeg,.pdf">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-danger" >ELIMINAR</button>
+                </div>
+                <input type="hidden" name="delete_id" id="id_eliminar"/>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 
@@ -260,6 +316,11 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{asset('plugins/jszip/jszip.min.js') }}"></script>
 <script type="text/javascript">
+
+    function eliminar(id) {
+        $('#modal4-eliminacion').modal('show');
+        $('#id_eliminar').val(id);
+    }
 
 	function getDeposito(act_id) {
 	    var token = '{{csrf_token()}}';
@@ -284,7 +345,7 @@
 
 	}
 
-	
+
 
 	function getDepositado(act_id) {
 	    var token = '{{csrf_token()}}';
@@ -299,7 +360,7 @@
 	        	$('#mdlNombre_depositado').html(data.actividad.nombre);
 	    		$('#actividadIniFin').val(data.actividad.id);
 	        	$('#mdlCuerpo_depositado').html(data.actividad.descripcion.replace(/\n/g, "</br>"));
-				
+
 				$('#monto_depositado').val(data.deposito.deposito_depositado);
 	        	$('#modal_deposito_finalizado').modal('show')
 	       },

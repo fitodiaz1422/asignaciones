@@ -398,7 +398,7 @@ class AsignacionesController extends Controller
                     foreach ($archivos_adj as $adj){
                         //$adj->delete();
                     }*/
-                    $deposito->delete();
+                    //$deposito->delete();
                 }
                 if($deposito->estado=='SOLICITADO'){
 					$deposito->delete();
