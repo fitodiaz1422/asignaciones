@@ -34,3 +34,4 @@ run.ps1
 .dockerignore
 docker/php/*
 docker/nginx/Dockerfile
+start.sh
