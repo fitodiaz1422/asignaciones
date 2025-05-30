@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./storage/app/public:/var/www/html/storage/app/public
+      - sessions:/var/www/html/storage/framework/sessions
     networks:
       - asignaciones_network
     extra_hosts:
@@ -42,3 +43,5 @@ services:
 networks:
   asignaciones_network:
     driver: bridge
+volumes:
+  sessions:
