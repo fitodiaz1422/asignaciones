@@ -385,7 +385,7 @@
                                         <td>{{ $motivo->tipo}}</td>
                                         <td>{{ $motivo->estado}}</td>
                                         <td><button class="btn btn-block bg-gradient-success btn-sm "onclick="editMotivo('{{$motivo->id}}','{{$motivo->name}}','{{$motivo->tipo}}','{{$motivo->estado}}')"   type="button"><i class="fas fa-edit "></i></button></td>
-                                    
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -407,6 +407,7 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre</th>
+                                    <th>Codigo</th>
                                     <th width="10px"></th>
                                 </tr>
                             </thead>
@@ -415,7 +416,8 @@
                                       <tr>
                                         <td>{{ $banco->id }}</td>
                                         <td>{{ $banco->nombre}}</td>
-                                        <td><button class="btn btn-block bg-gradient-success btn-sm " onclick="editBanco('{{$banco->id}}','{{$banco->nombre}}')"  type="button"><i class="fas fa-edit "></i></button></td>
+                                        <td>{{ $banco->codigo }}</td>
+                                        <td><button class="btn btn-block bg-gradient-success btn-sm " onclick="editBanco('{{$banco->id}}','{{$banco->nombre}}','{{$banco->codigo}}')"  type="button"><i class="fas fa-edit "></i></button></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -624,7 +626,7 @@
             </form>
         </div>
       </div>
-      
+
        <!-- Modals costo-->
     <div class="modal fade" id="modal_costo" >
         <div class="modal-dialog">
@@ -650,9 +652,9 @@
                             <label>estado</label>
                              <select class="form-control" name="estado"  required>
                             <option value="ACTIVO">ACTIVO</option>
-                            
+
                                 <option value="BLOQUEADO">BLOQUEADO</option>
-                            
+
                         </select>
                         </div>
                     </div>
@@ -686,18 +688,18 @@
                             <label>Tipo</label>
                              <select class="form-control" name="tipo_crear_motivo"  required>
                             <option value="ELIMINAR">ELIMINAR</option>
-                            
+
                                 <option value="MODIFICAR">MODIFICAR</option>
-                            
+
                         </select>
                         </div>
                          <div class="form-group">
                             <label>estado</label>
                              <select class="form-control" name="estado_crear_motivo"  required>
                             <option value="ACTIVO">ACTIVO</option>
-                            
+
                                 <option value="BLOQUEADO">BLOQUEADO</option>
-                            
+
                         </select>
                         </div>
                     </div>
@@ -757,6 +759,12 @@
                             <div class="form-group">
                                 <label>Nombre</label>
                                 <input type="text" class="form-control" maxlength="100" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Codigo</label>
+                                <input type="text" class="form-control" maxlength="100" name="codigo" required>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
@@ -1020,7 +1028,7 @@
             </form>
         </div>
       </div>
-      
+
       <!-- Modals Costo-->
     <div class="modal fade" id="modal_edit_costo" >
         <div class="modal-dialog">
@@ -1047,9 +1055,9 @@
                             <label>estado</label>
                              <select class="form-control" name="estado" id="costo_estado" required>
                             <option value="ACTIVO">ACTIVO</option>
-                            
+
                                 <option value="BLOQUEADO">BLOQUEADO</option>
-                            
+
                         </select>
                         </div>
                     </div>
@@ -1085,18 +1093,18 @@
                             <label>Tipo</label>
                              <select class="form-control" name="motivo_tipo" id="motivo_tipo" required>
                             <option value="ELIMINAR">ELIMINAR</option>
-                            
+
                                 <option value="MODIFICAR">MODIFICAR</option>
-                            
+
                         </select>
                         </div>
                         <div class="form-group">
                             <label>estado</label>
                              <select class="form-control" name="motivo_estado" id="motivo_estado" required>
                             <option value="ACTIVO">ACTIVO</option>
-                            
+
                                 <option value="BLOQUEADO">BLOQUEADO</option>
-                            
+
                         </select>
                         </div>
                     </div>
@@ -1160,6 +1168,12 @@
                             <div class="form-group">
                                 <label>Nombre</label>
                                 <input type="text" class="form-control" maxlength="100" id="banco_nombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Codigo</label>
+                                <input type="text" class="form-control" maxlength="100" id="banco_codigo" name="codigo" required>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
@@ -1262,7 +1276,7 @@
         $('#afp_valor').val(valor);
         $('#modal_edit_afp').modal('show')
     }
-    
+
      function editCcosto(id,codigo,descripcion,estado){
         $('#costo_id').val(id);
         $('#costo_codigo').val(codigo);
@@ -1278,7 +1292,7 @@
         $('#modal_edit_motivo').modal('show')
     }
 
-    
+
 
     function editSalud(id,nombre,valor){
         $('#salud_id').val(id);
@@ -1287,9 +1301,10 @@
         $('#modal_edit_salud').modal('show')
     }
 
-    function editBanco(id,nombre){
+    function editBanco(id,nombre,codigo){
         $('#banco_id').val(id);
         $('#banco_nombre').val(nombre);
+        $('#banco_codigo').val(codigo);
         $('#modal_edit_banco').modal('show')
     }
 

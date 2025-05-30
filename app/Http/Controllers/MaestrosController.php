@@ -135,7 +135,7 @@ class MaestrosController extends Controller
         DB::commit();
         return back()->with(['info'=>"Se Creo la Afp",'color'=>"bg-green"]);
     }
-    
+
      public function storeCosto(Request $request){
         DB::beginTransaction();
 		try {
@@ -175,6 +175,7 @@ class MaestrosController extends Controller
 		try {
             $banco= new \App\Banco;
             $banco->nombre=$request->nombre;
+            $banco->codigo=$request->codigo;
             $banco->save();
         } catch (\Exception $e) {
             DB::rollback();
@@ -322,7 +323,7 @@ class MaestrosController extends Controller
         DB::commit();
         return back()->with(['info'=>"Se Edito la Afp",'color'=>"bg-green"]);
     }
-    
+
      public function updateCosto(Request $request){
           //$costo = DB::table('centro_costo')->where('id','=',$request->id)->get();
         $costo=\App\Centro_costo::find($request->id);
@@ -364,6 +365,7 @@ class MaestrosController extends Controller
         DB::beginTransaction();
 		try {
             $banco->nombre=$request->nombre;
+            $banco->codigo=$request->codigo;
             $banco->save();
         } catch (\Exception $e) {
             DB::rollback();
