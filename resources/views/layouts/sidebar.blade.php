@@ -87,7 +87,7 @@
                     </a>
                   </li>
                   @endif
-                
+
 </ul>
             @endif
             @if (auth()->user()->hasRoles('cotizaciones.index'))
@@ -98,6 +98,25 @@
                   </a>
                 </li>
             @endif
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-money-bill"></i>
+                  <p>
+                    CONTABILIDAD
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @if (auth()->user()->hasRoles('contabilidad.exporta'))
+                        <li class="nav-item">
+                            <a href="{{ route ('contabilidad.exporta')}}" class="nav-link {{ activeMenu('contabilidad/exporta*') }}">
+                                <i class="fas fa-ellipsis-h nav-icon"></i>
+                                <p>EXPORTACIONES</p>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </li>
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-chart-pie"></i>

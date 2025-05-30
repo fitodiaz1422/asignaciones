@@ -247,6 +247,10 @@ Route::post('/cotizacionesPO', ['as'=>'cotizaciones.subirPO' ,'uses'=>'Cotizacio
 Route::post('/cotizacionesFactura', ['as'=>'cotizaciones.subirFactura' ,'uses'=>'CotizacionesController@subirFactura'])
 	->middleware('rol:cotizaciones.edit');
 
+Route::get('/contabilidad/exporta', ['as'=>'contabilidad.exporta', 'uses'=>'ContabilidadController@exporta'])
+    ->middleware('rol:contabilidad.exporta');
+Route::post('/contabilidad/exporta', ['as'=>'contabilidad.exporta_post', 'uses'=>'ContabilidadController@exportaPost'])
+    ->middleware('rol:contabilidad.exporta');
 
 Route::get('/clearcache', function () {
     Artisan::call('config:clear');
