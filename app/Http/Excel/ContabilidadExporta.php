@@ -95,7 +95,7 @@ class ContabilidadExporta
                 'nombre' => $this->formatearNombrePersonal($bono->usuario->name . " " . $bono->usuario->apaterno . " " . $bono->usuario->amaterno),
                 'monto' => $bono->monto,
                 'banco' => $bono->usuario->Banco->codigo ?? '',
-                'cuenta' => $this->formatearNombrePersonal($bono->usuario->TipoCuenta->nombre) ?? '',
+                'cuenta' => $this->formatearNombrePersonal($bono->usuario->TipoCuenta->nombre ?? '') ,
                 'numero_cuenta' => $bono->usuario->nro_cuenta ?? '',
                 'correo' => $bono->usuario->emailPersonal ?? '',
             ];
@@ -107,7 +107,7 @@ class ContabilidadExporta
                 'nombre' => $this->formatearNombrePersonal($deposito->usuario->name . " " . $deposito->usuario->apaterno . " " . $deposito->usuario->amaterno),
                 'monto' => $deposito->monto,
                 'banco' => $deposito->usuario->Banco->codigo ?? '',
-                'cuenta' => $this->formatearNombrePersonal($deposito->usuario->TipoCuenta->nombre) ?? '',
+                'cuenta' => $this->formatearNombrePersonal($deposito->usuario->TipoCuenta->nombre ?? ''),
                 'numero_cuenta' => $deposito->usuario->nro_cuenta ?? '',
                 'correo' => $deposito->usuario->emailPersonal ?? '',
             ];
