@@ -163,7 +163,7 @@
 
 										<div class="col-sm-6">
 											<p>Monto Depositado</p>
-											<input type="number" min="1" class="form-control"  name="monto" required/>
+											<input type="number" min="1" class="form-control"  name="monto" id="input_monto" required />
 										</div>
 										<div class="col-sm-12"><br><br>
 											<div class="form-group">
@@ -335,11 +335,13 @@
 	    		$('#actividadIniFin').val(data.actividad.id);
 	        	$('#mdlCuerpo').html(data.actividad.descripcion.replace(/\n/g, "</br>"));
 	        	$('#modal2-xl').modal('show')
+                $('#input_monto').val(data.deposito.deposito_solicitado);
 	       },
 	        error: function (request, status, error) {
 	        	$('#mdlNombre').html("");
 	    		$('#actividadIniFin').val("");
 	        	$('#mdlCuerpo').html("");
+                $('#input_monto').val("");
 	        }
 		})
 
