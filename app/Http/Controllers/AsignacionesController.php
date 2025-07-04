@@ -75,7 +75,7 @@ class AsignacionesController extends Controller
 
     	$comunas=Comuna::query()->orderby('nombre','asc')->with('Region')->get();
 
-    	$costo = DB::table('centro_costos')->where('estado','=','ACTIVO')->get();
+    	$costos = DB::table('centro_costos')->where('estado','=','ACTIVO')->get();
 
 		$motivos = Motivos::where('estado','ACTIVO')->get();
 
@@ -93,7 +93,7 @@ class AsignacionesController extends Controller
     		$mod=false;
         if($date>date('Y-m-d'))
     		$futuro=false;
-    	return view('asignaciones.index',compact('users','proyectos','comunas','date','regiones','mod','futuro','costo','motivos','solicitados','filter_region_id','filter_proyecto_id','filter_sin_asignar'));
+    	return view('asignaciones.index',compact('users','proyectos','comunas','date','regiones','mod','futuro','costos','motivos','solicitados','filter_region_id','filter_proyecto_id','filter_sin_asignar'));
     }
 
     public function store(CreateAsignacionRequest $request){
@@ -527,7 +527,8 @@ class AsignacionesController extends Controller
 					$actividad->user_id=$us->id;
 					$actividad->coordinacion=auth()->user()->id;
 					$actividad->coordinacion_name=auth()->user()->name ." ". auth()->user()->apaterno;
-					$actividad->centro_costo_id=0;
+        			$actividad->centro_costo_id=$request->costo_masivo_id;
+
 				    $actividad->save();
 
 					//dd("estoy");
@@ -601,12 +602,13 @@ class AsignacionesController extends Controller
 					$actividad->tipo_asistencia_id=0;
 					$actividad->proyecto_id=$request->proyecto_id;
 					$actividad->comuna_id=$request->comuna_id;
-			$actividad->descripcion=$datos;
+			        $actividad->descripcion=$datos;
 
 					$actividad->user_id=$usuario->id;
 					$actividad->coordinacion=auth()->user()->id;
 					$actividad->coordinacion_name=auth()->user()->name ." ". auth()->user()->apaterno;
-					$actividad->centro_costo_id=0;
+        			$actividad->centro_costo_id=$request->costo_masivo_id;
+
 				    $actividad->save();
 
 

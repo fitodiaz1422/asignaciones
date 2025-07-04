@@ -733,8 +733,8 @@
 	            		    <div class="form-group">
 		                  <label>Centro de Costo</label>
 		                  <select class="form-control select2"  id="inputCcosto" name="costo_id" required>
-		                      <option value="0">Seleccione Centro de Costo</option>
-		                  	@foreach($costo as $costo)
+		                      <option value="">Seleccione Centro de Costo</option>
+		                  	@foreach($costos as $costo)
 		                    	<option value="{{$costo->id}}">{{$costo->descripcion}}</option>
 		                    @endforeach
 		                  </select>
@@ -1137,6 +1137,19 @@
 		                    @endforeach
 		                  </select>
 		                </div>
+
+
+	            		    <div class="form-group">
+		                  <label>Centro de Costo</label>
+		                  <select class="form-control select2"  id="inputCcosto_masivo" name="costo_masivo_id" required>
+		                      <option value="">Seleccione Centro de Costo</option>
+		                  	@foreach($costos as $costo)
+		                    	<option value="{{$costo->id}}">{{$costo->descripcion}}</option>
+		                    @endforeach
+		                  </select>
+                            </div>
+
+
 						</div>
 
 
