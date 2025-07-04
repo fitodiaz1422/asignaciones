@@ -2,11 +2,9 @@
 
 set -e
 
-#IMAGE_NAME="fcom/promanager-base:latest"
-
-echo "🔧 Actualizando repositorio..."
+#echo "🔧 Actualizando repositorio..."
 #git pull
-echo "✅ Repositorio actualizado."
+#echo "✅ Repositorio actualizado."
 
 #echo "🔧 Creando imagen base..."
 #docker build -f docker/Dockerfile.base -t $IMAGE_NAME .
