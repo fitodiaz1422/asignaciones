@@ -42,8 +42,9 @@ class AsistenciaExcel{
     private function query(){
         // Implementamos caché para evitar consultas repetidas
             $total = DB::table('users_actividades')
-                ->selectRaw('users.id, actividades.tipo_asistencia_id, right(users_actividades.fecha,2) as dia')
+                ->selectRaw('users.id, actividades.tipo_asistencia_id, right(users_actividades.fecha,2) as dia, comunas.nombre as comuna')
                 ->join('users', 'users.id', '=', 'users_actividades.user_id')
+                ->join('comunas','comunas.id','=','users.comuna_id')
                 ->join('actividades', 'actividades.id', '=', 'users_actividades.actividad_id')
                 ->where(DB::raw('left(users_actividades.fecha,6)'), '=', $this->fecha)
                 ->groupBy('users_actividades.user_id', 'users_actividades.fecha', 'users.id', 'actividades.tipo_asistencia_id')
@@ -180,7 +181,7 @@ class AsistenciaExcel{
                     WriterEntityFactory::createCell($user->apaterno. " " . $user->amaterno),
                     WriterEntityFactory::createCell($user->funcion),
                     WriterEntityFactory::createCell($user->proyecto->nombre ?? ''),
-                    WriterEntityFactory::createCell($user->region->comuna->nombre ?? ''),
+                    WriterEntityFactory::createCell($comuna ?? ''),
                     WriterEntityFactory::createCell($atraso ? $atraso->atraso : 0),
                     WriterEntityFactory::createCell($anticipo ? $anticipo->monto : 0),
                 ];
